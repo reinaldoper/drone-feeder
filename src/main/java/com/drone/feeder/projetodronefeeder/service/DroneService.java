@@ -9,6 +9,7 @@ import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.model.Entrega;
 import com.drone.feeder.projetodronefeeder.repository.DroneRepository;
 
+/** classe droneService. */
 @Service
 public class DroneService {
 
@@ -18,16 +19,6 @@ public class DroneService {
   /** metodo getAll. */
   public List<Drone> getAllDrones() {
     return droneRepo.findAll();
-  }
-
-  /** metodo getAllEntregas. */
-  public List<Entrega> getAllEntregasDrone(Long id) {
-    Drone droneId = droneRepo.findById(id).orElse(null);;
-    if (droneId != null) {
-      return droneId.getEntrega();
-    } else {
-      throw new DroneNotFound();
-    }
   }
 
   /** metdo getBYId. */

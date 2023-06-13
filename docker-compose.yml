@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  ##drone-feeder:
+    ##build:
+     ## context: .
+    ##  dockerfile: Dockerfile
+    ##ports:
+    ##  - 8080:8080
+   ## depends_on:
+   ##   - mysql
+   ## environment:
+    ##  - SPRING_DATASOURCE_URL=jdbc:mysql://localhost:3306/drone_feeder?useSSL=false
+     ## - SPRING_DATASOURCE_USERNAME=your_username
+    ##  - SPRING_DATASOURCE_PASSWORD=your_password
+    ##restart: always
+
+  mysql:
+    image: mysql:8.0
+    ports:
+      - 3306:3306
+    environment:
+      - MYSQL_ROOT_PASSWORD=your_root_password
+      - MYSQL_DATABASE=drone_feeder
+      - MYSQL_USER=your_username
+      - MYSQL_PASSWORD=your_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+
+volumes:
+  mysql_data:

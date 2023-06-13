@@ -1,14 +1,14 @@
 package com.drone.feeder.projetodronefeeder.service;
 
-import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
 import com.drone.feeder.projetodronefeeder.exceptions.EntregaNotFound;
 import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.model.Entrega;
 import com.drone.feeder.projetodronefeeder.repository.DroneRepository;
 import com.drone.feeder.projetodronefeeder.repository.EntregaRepository;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /** classe entregaService. */
 @Service
@@ -62,12 +62,23 @@ public class EntregaService {
     entregaRepo.save(entrega);
   }
 
+  /** metodo alterar status. */
+  public void status(String status, Integer id) {
+    Entrega entrega = entregaRepo.findById(id).orElse(null);
+    if (entrega != null) {
+      entrega.setStatus(status);
+    } else {
+      throw new EntregaNotFound();
+    }
+  }
+
   /** metodo update. */
   public void update(Entrega entrega, Integer id) {
     Entrega entregaId = entregaRepo.findById(id).orElse(null);
     if (entregaId != null) {
       entregaId.setDataHora(entrega.getDataHora());
       entregaId.setDrone(entrega.getDrone());
+      entregaId.setVideo(entrega.getVideo());
       entregaRepo.save(entregaId);
     } else {
       throw new EntregaNotFound();

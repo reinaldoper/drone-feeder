@@ -1,13 +1,11 @@
 package com.drone.feeder.projetodronefeeder.service;
 
-import java.util.List;
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
 import com.drone.feeder.projetodronefeeder.model.Drone;
-import com.drone.feeder.projetodronefeeder.model.Entrega;
 import com.drone.feeder.projetodronefeeder.repository.DroneRepository;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 /** classe droneService. */
 @Service

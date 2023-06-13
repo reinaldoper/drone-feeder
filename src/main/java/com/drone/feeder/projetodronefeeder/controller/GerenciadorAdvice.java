@@ -1,13 +1,13 @@
 package com.drone.feeder.projetodronefeeder.controller;
 
+import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
+import com.drone.feeder.projetodronefeeder.exceptions.EntregaNotFound;
+import com.drone.feeder.projetodronefeeder.exceptions.VideoNotFound;
 import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
-import com.drone.feeder.projetodronefeeder.exceptions.EntregaNotFound;
-import com.drone.feeder.projetodronefeeder.exceptions.VideoNotFound;
 
 /*
  * 

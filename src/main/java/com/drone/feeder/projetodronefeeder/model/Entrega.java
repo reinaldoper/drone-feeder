@@ -2,11 +2,13 @@ package com.drone.feeder.projetodronefeeder.model;
 
 import java.time.LocalDateTime;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 
 /** class Entrega. */
 
@@ -24,19 +26,31 @@ public class Entrega {
   @JoinColumn(name = "drone_id")
   private Drone drone;
 
+  @OneToOne(fetch = FetchType.LAZY)
+  private Video video;
+
   public LocalDateTime getDataHora() {
     return dataHora;
+  }
+
+  public Video getVideo() {
+    return video;
+  }
+
+  public void setVideo(Video video) {
+    this.video = video;
   }
 
   /** construtor default. */
   public Entrega() {}
 
   /** construtor. */
-  public Entrega(String status, Drone drone) {
+  public Entrega(String status, Drone drone, Video video) {
     super();
     this.dataHora = LocalDateTime.now();
     this.status = status;
     this.drone = drone;
+    this.video = video;
   }
 
   public void setDataHora(LocalDateTime dataHora) {

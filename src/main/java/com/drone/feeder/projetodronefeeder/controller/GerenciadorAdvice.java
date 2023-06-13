@@ -2,6 +2,7 @@ package com.drone.feeder.projetodronefeeder.controller;
 
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
 import com.drone.feeder.projetodronefeeder.exceptions.EntregaNotFound;
+import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
 import com.drone.feeder.projetodronefeeder.exceptions.VideoNotFound;
 import java.util.HashMap;
 import org.springframework.http.HttpStatus;
@@ -42,8 +43,8 @@ public class GerenciadorAdvice {
   }
 
   /** erro interno. */
-  @ExceptionHandler(Exception.class)
-  public ResponseEntity<String> handleException(Exception ex) {
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado");
+  @ExceptionHandler(InternalException.class)
+  public ResponseEntity<String> handleException(InternalException ex) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
   }
 }

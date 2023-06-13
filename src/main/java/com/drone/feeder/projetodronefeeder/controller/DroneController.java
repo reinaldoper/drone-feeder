@@ -1,0 +1,85 @@
+package com.drone.feeder.projetodronefeeder.controller;
+
+import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
+import com.drone.feeder.projetodronefeeder.model.Drone;
+import com.drone.feeder.projetodronefeeder.service.DroneService;
+import java.util.HashMap;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/** class droneController. */
+
+@RestController
+@RequestMapping("/drones")
+public class DroneController {
+
+  @Autowired
+  DroneService droneService;
+
+  /** metodo getAllDrones. */
+  @GetMapping
+  public ResponseEntity<List<Drone>> getAllDrones() {
+    try {
+      List<Drone> drones = droneService.getAllDrones();
+      return ResponseEntity.status(HttpStatus.OK).body(drones);
+    } catch (Exception e) {
+      throw new InternalException();
+    }
+  }
+
+  /** metodo getDroneId. */
+  @GetMapping("/{id}")
+  public ResponseEntity<Drone> getDroneById(@PathVariable Integer id) {
+    try {
+      Drone drone = droneService.getById(id);
+      return ResponseEntity.status(HttpStatus.OK).body(drone);
+    } catch (Exception e) {
+      throw new InternalException();
+    }
+  }
+
+  /** metodo saveDrone. */
+  @PostMapping
+  public ResponseEntity<HashMap<String, String>> createDrone(@RequestBody Drone drone) {
+    try {
+      droneService.save(drone);
+      return ResponseEntity.status(HttpStatus.CREATED).body(new MensagemController().mensagem());
+    } catch (Exception e) {
+      throw new InternalException();
+    }
+  }
+
+  /** metodo updateDrone. */
+  @PutMapping("/{id}")
+  public ResponseEntity<HashMap<String, String>> updateDrone(@PathVariable Integer id,
+      @RequestBody Drone updatedDrone) {
+    try {
+      droneService.update(updatedDrone, id);
+      return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().atualizar());
+    } catch (Exception e) {
+      throw new InternalException();
+    }
+  }
+
+  /** metodo deleteDrone. */
+  @DeleteMapping("/{id}")
+  public ResponseEntity<HashMap<String, String>> deleteDrone(@PathVariable Integer id) {
+    try {
+      droneService.delete(id);
+      return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().excluir());
+    } catch (Exception e) {
+      throw new InternalException();
+    }
+  }
+
+}

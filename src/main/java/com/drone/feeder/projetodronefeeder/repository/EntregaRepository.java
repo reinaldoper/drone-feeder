@@ -6,6 +6,6 @@ import com.drone.feeder.projetodronefeeder.model.Entrega;
 
 // Repositório Entrega
 @Repository
-public interface EntregaRepository extends JpaRepository<Entrega, Long> {
+public interface EntregaRepository extends JpaRepository<Entrega, Integer> {
 
 }

@@ -21,7 +21,7 @@ public class EntregaService {
   DroneRepository droneRepo;
 
   /** metodo getAllEntregas. */
-  public List<Entrega> getAllEntregasDrone(Long id) {
+  public List<Entrega> getAllEntregasDrone(Integer id) {
     Drone droneId = droneRepo.findById(id).orElse(null);;
     if (droneId != null) {
       return droneId.getEntrega();
@@ -37,7 +37,7 @@ public class EntregaService {
   }
 
   /** metodo getById. */
-  public Entrega getById(Long id) {
+  public Entrega getById(Integer id) {
     Entrega entrega = entregaRepo.findById(id).orElse(null);
     if (entrega != null) {
       return entrega;
@@ -47,7 +47,7 @@ public class EntregaService {
   }
 
   /** metodo deleteById. */
-  public void deleteById(Long id) {
+  public void deleteById(Integer id) {
     Entrega entrega = entregaRepo.findById(id).orElse(null);
     if (entrega != null) {
       entregaRepo.delete(entrega);
@@ -63,7 +63,7 @@ public class EntregaService {
   }
 
   /** metodo update. */
-  public void update(Entrega entrega, Long id) {
+  public void update(Entrega entrega, Integer id) {
     Entrega entregaId = entregaRepo.findById(id).orElse(null);
     if (entregaId != null) {
       entregaId.setDataHora(entrega.getDataHora());

@@ -6,7 +6,7 @@ import com.drone.feeder.projetodronefeeder.model.Drone;
 
 // Repositório Drone
 @Repository
-public interface DroneRepository extends JpaRepository<Drone, Long> {
+public interface DroneRepository extends JpaRepository<Drone, Integer> {
   public String getByName(String name);
 
 }

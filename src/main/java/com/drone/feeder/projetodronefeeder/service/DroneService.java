@@ -22,7 +22,7 @@ public class DroneService {
   }
 
   /** metdo getBYId. */
-  public Drone getById(Long id) {
+  public Drone getById(Integer id) {
     Drone droneId = droneRepo.findById(id).orElse(null);;
     if (droneId != null) {
       return droneId;
@@ -37,7 +37,7 @@ public class DroneService {
   }
 
   /** metdo update. */
-  public void update(Drone drone, Long id) {
+  public void update(Drone drone, Integer id) {
     Drone droneId = droneRepo.findById(id).orElse(null);;
     if (droneId != null) {
       droneId.setLatitude(drone.getLatitude());
@@ -50,7 +50,7 @@ public class DroneService {
   }
 
   /** metdo delete. */
-  public void delete(Long id) {
+  public void delete(Integer id) {
     Drone droneId = droneRepo.findById(id).orElse(null);;
     if (droneId != null) {
       droneRepo.deleteById(id);

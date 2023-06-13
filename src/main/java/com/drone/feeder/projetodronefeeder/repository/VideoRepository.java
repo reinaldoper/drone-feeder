@@ -6,6 +6,6 @@ import com.drone.feeder.projetodronefeeder.model.Video;
 
 // Repositório Video
 @Repository
-public interface VideoRepository extends JpaRepository<Video, Long> {
+public interface VideoRepository extends JpaRepository<Video, Integer> {
 
 }

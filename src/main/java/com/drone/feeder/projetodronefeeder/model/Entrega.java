@@ -14,10 +14,10 @@ import javax.persistence.ManyToOne;
 public class Entrega {
   /** metodo. */
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
   private LocalDateTime dataHora;
-  private String status;
+  private String status = "entregue";
   // Outros atributos e getters/setters
 
   @ManyToOne

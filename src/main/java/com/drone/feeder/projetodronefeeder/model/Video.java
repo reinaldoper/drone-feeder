@@ -12,8 +12,8 @@ public class Video {
 
   /** metodo. */
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
 
   private String nomeArquivo;
 

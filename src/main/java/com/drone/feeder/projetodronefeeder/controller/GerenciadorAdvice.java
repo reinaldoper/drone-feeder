@@ -40,4 +40,10 @@ public class GerenciadorAdvice {
     msg.put("error", ex.getMessage());
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
   }
+
+  /** erro interno. */
+  @ExceptionHandler(Exception.class)
+  public ResponseEntity<String> handleException(Exception ex) {
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Erro inesperado");
+  }
 }

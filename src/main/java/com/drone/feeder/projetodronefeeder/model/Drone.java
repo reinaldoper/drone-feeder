@@ -14,8 +14,8 @@ public class Drone {
 
   /** metodos. */
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Integer id;
   private double latitude;
   private double longitude;
 

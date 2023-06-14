@@ -5,7 +5,7 @@ package com.drone.feeder.projetodronefeeder.exceptions;
  **/
 
 @SuppressWarnings("serial")
-public class InternalException extends RuntimeException {
+public class InternalException extends NumberFormatException {
   /** metodo super. */
   public InternalException() {
     super("Erro interno");

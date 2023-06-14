@@ -44,7 +44,9 @@ public class GerenciadorAdvice {
 
   /** erro interno. */
   @ExceptionHandler(InternalException.class)
-  public ResponseEntity<String> handleException(InternalException ex) {
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ex.getMessage());
+  public ResponseEntity<HashMap<String, String>> handleException(InternalException ex) {
+    HashMap<String, String> msg = new HashMap<String, String>();
+    msg.put("error", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
   }
 }

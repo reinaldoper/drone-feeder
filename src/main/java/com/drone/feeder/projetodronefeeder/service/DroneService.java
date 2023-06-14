@@ -1,6 +1,7 @@
 package com.drone.feeder.projetodronefeeder.service;
 
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
+import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
 import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.repository.DroneRepository;
 import java.util.List;
@@ -45,6 +46,7 @@ public class DroneService {
     } else {
       throw new DroneNotFound();
     }
+
   }
 
   /** metdo delete. */

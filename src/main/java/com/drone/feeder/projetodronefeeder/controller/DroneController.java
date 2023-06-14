@@ -32,7 +32,7 @@ public class DroneController {
     try {
       List<Drone> drones = droneService.getAllDrones();
       return ResponseEntity.status(HttpStatus.OK).body(drones);
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
       throw new InternalException();
     }
   }
@@ -43,7 +43,7 @@ public class DroneController {
     try {
       Drone drone = droneService.getById(id);
       return ResponseEntity.status(HttpStatus.OK).body(drone);
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
       throw new InternalException();
     }
   }
@@ -54,7 +54,7 @@ public class DroneController {
     try {
       droneService.save(drone);
       return ResponseEntity.status(HttpStatus.CREATED).body(new MensagemController().mensagem());
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
       throw new InternalException();
     }
   }
@@ -66,7 +66,7 @@ public class DroneController {
     try {
       droneService.update(updatedDrone, id);
       return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().atualizar());
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
       throw new InternalException();
     }
   }
@@ -77,7 +77,7 @@ public class DroneController {
     try {
       droneService.delete(id);
       return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().excluir());
-    } catch (Exception e) {
+    } catch (NumberFormatException e) {
       throw new InternalException();
     }
   }

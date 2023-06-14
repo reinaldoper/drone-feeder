@@ -1,14 +1,20 @@
 package com.drone.feeder.projetodronefeeder.controller;
 
 import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
+import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.model.Entrega;
 import com.drone.feeder.projetodronefeeder.service.EntregaService;
+import java.util.HashMap;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -44,12 +50,47 @@ public class EntregaController {
     }
   }
 
+  /** altera status. */
+  @PutMapping("/{id}/status")
+  public ResponseEntity<HashMap<String, String>> atualizaStatus(@PathVariable Integer id,
+      @RequestBody String status) {
+    try {
+      entregaService.status(status, id);
+      return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().atualizar());
+    } catch (NumberFormatException e) {
+      throw new InternalException();
+    }
+  }
+
   /** metodo getIdEntregas. */
   @GetMapping("/{id}")
   public ResponseEntity<Entrega> getById(@PathVariable Integer id) {
     try {
       Entrega entrega = entregaService.getById(id);
       return ResponseEntity.status(HttpStatus.OK).body(entrega);
+    } catch (NumberFormatException e) {
+      throw new InternalException();
+    }
+  }
+
+  /** adiciona entrega de um drone. */
+  @PostMapping("/{id}/drone")
+  public ResponseEntity<HashMap<String, String>> entregaDrone(@PathVariable Integer id,
+      @RequestBody Entrega entrega) {
+    try {
+      entregaService.saveEntregaDrone(entrega, id);
+      return ResponseEntity.status(HttpStatus.CREATED).body(new MensagemController().mensagem());
+    } catch (NumberFormatException e) {
+      throw new InternalException();
+    }
+  }
+
+  /** deleta entrega. */
+  @DeleteMapping("/{id}")
+  public ResponseEntity<HashMap<String, String>> deleteEntrega(@PathVariable Integer id) {
+    try {
+      entregaService.deleteById(id);
+      return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().excluir());
     } catch (NumberFormatException e) {
       throw new InternalException();
     }

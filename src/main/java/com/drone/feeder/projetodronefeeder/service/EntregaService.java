@@ -77,11 +77,22 @@ public class EntregaService {
     Entrega entregaId = entregaRepo.findById(id).orElse(null);
     if (entregaId != null) {
       entregaId.setDataHora(entrega.getDataHora());
-      entregaId.setDrone(entrega.getDrone());
       entregaId.setVideo(entrega.getVideo());
       entregaRepo.save(entregaId);
     } else {
       throw new EntregaNotFound();
+    }
+  }
+
+  /** salva entrega drone. */
+  public void saveEntregaDrone(Entrega entrega, Integer id) {
+    Drone droneId = droneRepo.findById(id).orElse(null);
+    if (droneId != null) {
+      entrega.setDrone(droneId);
+      droneId.adicionarEntrega(entrega);
+      droneRepo.save(droneId);
+    } else {
+      throw new DroneNotFound();
     }
   }
 

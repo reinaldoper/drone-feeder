@@ -41,7 +41,6 @@ public class DroneService {
     if (droneId != null) {
       droneId.setLatitude(drone.getLatitude());
       droneId.setLongitude(drone.getLongitude());
-      droneId.setEntrega(drone.getEntrega());
       droneRepo.save(droneId);
     } else {
       throw new DroneNotFound();

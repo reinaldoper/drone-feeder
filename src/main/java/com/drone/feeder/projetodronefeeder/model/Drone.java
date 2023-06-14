@@ -56,4 +56,10 @@ public class Drone {
     this.longitude = longitude;
   }
 
+  /** metodo adicionar. */
+  public void adicionarEntrega(Entrega entrega) {
+    this.entrega.add(entrega);
+
+  }
+
 }

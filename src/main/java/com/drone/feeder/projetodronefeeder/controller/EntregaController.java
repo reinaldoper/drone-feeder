@@ -1,7 +1,6 @@
 package com.drone.feeder.projetodronefeeder.controller;
 
 import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
-import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.model.Entrega;
 import com.drone.feeder.projetodronefeeder.service.EntregaService;
 import java.util.HashMap;
@@ -52,10 +51,11 @@ public class EntregaController {
 
   /** altera status. */
   @PutMapping("/{id}/status")
-  public ResponseEntity<HashMap<String, String>> atualizaStatus(@PathVariable Integer id,
+  public ResponseEntity<HashMap<String, String>> atualizaStatus(@PathVariable String id,
       @RequestBody String status) {
     try {
-      entregaService.status(status, id);
+      Integer parsedId = Integer.parseInt(id);
+      entregaService.status(status, parsedId);
       return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().atualizar());
     } catch (NumberFormatException e) {
       throw new InternalException();
@@ -64,9 +64,10 @@ public class EntregaController {
 
   /** metodo getIdEntregas. */
   @GetMapping("/{id}")
-  public ResponseEntity<Entrega> getById(@PathVariable Integer id) {
+  public ResponseEntity<Entrega> getById(@PathVariable String id) {
     try {
-      Entrega entrega = entregaService.getById(id);
+      Integer parsedId = Integer.parseInt(id);
+      Entrega entrega = entregaService.getById(parsedId);
       return ResponseEntity.status(HttpStatus.OK).body(entrega);
     } catch (NumberFormatException e) {
       throw new InternalException();
@@ -75,10 +76,11 @@ public class EntregaController {
 
   /** adiciona entrega de um drone. */
   @PostMapping("/{id}/drone")
-  public ResponseEntity<HashMap<String, String>> entregaDrone(@PathVariable Integer id,
+  public ResponseEntity<HashMap<String, String>> entregaDrone(@PathVariable String id,
       @RequestBody Entrega entrega) {
     try {
-      entregaService.saveEntregaDrone(entrega, id);
+      Integer parsedId = Integer.parseInt(id);
+      entregaService.saveEntregaDrone(entrega, parsedId);
       return ResponseEntity.status(HttpStatus.CREATED).body(new MensagemController().mensagem());
     } catch (NumberFormatException e) {
       throw new InternalException();
@@ -87,9 +89,10 @@ public class EntregaController {
 
   /** deleta entrega. */
   @DeleteMapping("/{id}")
-  public ResponseEntity<HashMap<String, String>> deleteEntrega(@PathVariable Integer id) {
+  public ResponseEntity<HashMap<String, String>> deleteEntrega(@PathVariable String id) {
     try {
-      entregaService.deleteById(id);
+      Integer parsedId = Integer.parseInt(id);
+      entregaService.deleteById(parsedId);
       return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().excluir());
     } catch (NumberFormatException e) {
       throw new InternalException();

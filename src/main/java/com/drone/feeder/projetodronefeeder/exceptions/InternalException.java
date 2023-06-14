@@ -8,7 +8,7 @@ package com.drone.feeder.projetodronefeeder.exceptions;
 public class InternalException extends NumberFormatException {
   /** metodo super. */
   public InternalException() {
-    super("Erro interno");
+    super("O ID deve ser um número inteiro válido.");
   }
 
 }

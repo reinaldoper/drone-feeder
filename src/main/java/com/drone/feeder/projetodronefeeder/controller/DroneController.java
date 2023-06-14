@@ -29,19 +29,16 @@ public class DroneController {
   /** metodo getAllDrones. */
   @GetMapping
   public ResponseEntity<List<Drone>> getAllDrones() {
-    try {
-      List<Drone> drones = droneService.getAllDrones();
-      return ResponseEntity.status(HttpStatus.OK).body(drones);
-    } catch (NumberFormatException e) {
-      throw new InternalException();
-    }
+    List<Drone> drones = droneService.getAllDrones();
+    return ResponseEntity.status(HttpStatus.OK).body(drones);
   }
 
   /** metodo getDroneId. */
   @GetMapping("/{id}")
-  public ResponseEntity<Drone> getDroneById(@PathVariable Integer id) {
+  public ResponseEntity<Drone> getDroneById(@PathVariable String id) {
     try {
-      Drone drone = droneService.getById(id);
+      Integer parsedId = Integer.parseInt(id);
+      Drone drone = droneService.getById(parsedId);
       return ResponseEntity.status(HttpStatus.OK).body(drone);
     } catch (NumberFormatException e) {
       throw new InternalException();
@@ -51,20 +48,17 @@ public class DroneController {
   /** metodo saveDrone. */
   @PostMapping
   public ResponseEntity<HashMap<String, String>> createDrone(@RequestBody Drone drone) {
-    try {
-      droneService.save(drone);
-      return ResponseEntity.status(HttpStatus.CREATED).body(new MensagemController().mensagem());
-    } catch (NumberFormatException e) {
-      throw new InternalException();
-    }
+    droneService.save(drone);
+    return ResponseEntity.status(HttpStatus.CREATED).body(new MensagemController().mensagem());
   }
 
   /** metodo updateDrone. */
   @PutMapping("/{id}")
-  public ResponseEntity<HashMap<String, String>> updateDrone(@PathVariable Integer id,
+  public ResponseEntity<HashMap<String, String>> updateDrone(@PathVariable String id,
       @RequestBody Drone updatedDrone) {
     try {
-      droneService.update(updatedDrone, id);
+      Integer parsedId = Integer.parseInt(id);
+      droneService.update(updatedDrone, parsedId);
       return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().atualizar());
     } catch (NumberFormatException e) {
       throw new InternalException();
@@ -73,9 +67,10 @@ public class DroneController {
 
   /** metodo deleteDrone. */
   @DeleteMapping("/{id}")
-  public ResponseEntity<HashMap<String, String>> deleteDrone(@PathVariable Integer id) {
+  public ResponseEntity<HashMap<String, String>> deleteDrone(@PathVariable String id) {
     try {
-      droneService.delete(id);
+      Integer parsedId = Integer.parseInt(id);
+      droneService.delete(parsedId);
       return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().excluir());
     } catch (NumberFormatException e) {
       throw new InternalException();

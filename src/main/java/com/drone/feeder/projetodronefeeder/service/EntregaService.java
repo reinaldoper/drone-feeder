@@ -1,12 +1,18 @@
 package com.drone.feeder.projetodronefeeder.service;
 
+import com.drone.feeder.projetodronefeeder.controller.AdicionaTarefa;
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
 import com.drone.feeder.projetodronefeeder.exceptions.EntregaNotFound;
+import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
+import com.drone.feeder.projetodronefeeder.exceptions.VideoNotFound;
 import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.model.Entrega;
+import com.drone.feeder.projetodronefeeder.model.Video;
 import com.drone.feeder.projetodronefeeder.repository.DroneRepository;
 import com.drone.feeder.projetodronefeeder.repository.EntregaRepository;
+import com.drone.feeder.projetodronefeeder.repository.VideoRepository;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +25,9 @@ public class EntregaService {
 
   @Autowired
   DroneRepository droneRepo;
+
+  @Autowired
+  VideoRepository videoRepo;
 
   /** metodo getAllEntregas. */
   public List<Entrega> getAllEntregasDrone(Integer id) {
@@ -58,8 +67,52 @@ public class EntregaService {
 
   /** metodo save. */
 
-  public void save(Entrega entrega) {
-    entregaRepo.save(entrega);
+  public void save(AdicionaTarefa adicionaTarefa) {
+    try {
+      Integer ids = adicionaTarefa.getVideoId();
+      Video video = videoRepo.findById(ids).orElse(null);
+      if (video == null) {
+        throw new VideoNotFound();
+      }
+      Integer droneId = adicionaTarefa.getDroneId();
+      Drone drone = droneRepo.findById(droneId).orElse(null);
+      if (drone == null) {
+        throw new DroneNotFound();
+      }
+      Entrega entrega = new Entrega();
+      entrega.setStatus(adicionaTarefa.getStatus());
+      entrega.setVideo(video);
+      entrega.setDrone(drone);
+      drone.adicionarEntrega(entrega);
+      droneRepo.save(drone);
+    } catch (NumberFormatException e) {
+      throw new InternalException();
+    }
+
+  }
+
+  /** metodo update. */
+
+  public void update(Integer id, AdicionaTarefa adicionaTarefa) {
+    try {
+      Integer ids = adicionaTarefa.getVideoId();
+      Video video = videoRepo.findById(ids).orElse(null);
+      if (video == null) {
+        throw new VideoNotFound();
+      }
+      Drone drone = droneRepo.findById(id).orElse(null);
+      if (drone == null) {
+        throw new DroneNotFound();
+      }
+      Entrega entrega = new Entrega();
+      entrega.setVideo(video);
+      entrega.setDrone(drone);
+      drone.adicionarEntrega(entrega);
+      droneRepo.save(drone);
+    } catch (NumberFormatException e) {
+      throw new InternalException();
+    }
+
   }
 
   /** metodo alterar status. */
@@ -67,32 +120,9 @@ public class EntregaService {
     Entrega entrega = entregaRepo.findById(id).orElse(null);
     if (entrega != null) {
       entrega.setStatus(status);
+      entregaRepo.save(entrega);
     } else {
       throw new EntregaNotFound();
-    }
-  }
-
-  /** metodo update. */
-  public void update(Entrega entrega, Integer id) {
-    Entrega entregaId = entregaRepo.findById(id).orElse(null);
-    if (entregaId != null) {
-      entregaId.setDataHora(entrega.getDataHora());
-      entregaId.setVideo(entrega.getVideo());
-      entregaRepo.save(entregaId);
-    } else {
-      throw new EntregaNotFound();
-    }
-  }
-
-  /** salva entrega drone. */
-  public void saveEntregaDrone(Entrega entrega, Integer id) {
-    Drone droneId = droneRepo.findById(id).orElse(null);
-    if (droneId != null) {
-      entrega.setDrone(droneId);
-      droneId.adicionarEntrega(entrega);
-      droneRepo.save(droneId);
-    } else {
-      throw new DroneNotFound();
     }
   }
 

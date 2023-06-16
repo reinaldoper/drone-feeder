@@ -1,6 +1,9 @@
 package com.drone.feeder.projetodronefeeder.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -16,21 +19,29 @@ import javax.persistence.OneToOne;
 public class Entrega {
   /** metodo. */
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
-  private LocalDateTime dataHora;
-  private String status = "entregue";
+  private String dataHora =
+      LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss"));
+  private String status = "pendente";
   // Outros atributos e getters/setters
 
-  @ManyToOne
+  @JsonBackReference
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "drone_id")
   private Drone drone;
 
-  @OneToOne(fetch = FetchType.LAZY)
+
+  @OneToOne(fetch = FetchType.EAGER)
+  @JoinColumn(name = "video_id")
   private Video video;
 
-  public LocalDateTime getDataHora() {
+  public String getDataHora() {
     return dataHora;
+  }
+
+  public Integer getId() {
+    return id;
   }
 
   public Video getVideo() {
@@ -45,15 +56,14 @@ public class Entrega {
   public Entrega() {}
 
   /** construtor. */
-  public Entrega(String status, Drone drone, Video video) {
+  public Entrega(String status, Video video, Drone drone) {
     super();
-    this.dataHora = LocalDateTime.now();
     this.status = status;
-    this.drone = drone;
     this.video = video;
+    this.drone = drone;
   }
 
-  public void setDataHora(LocalDateTime dataHora) {
+  public void setDataHora(String dataHora) {
     this.dataHora = dataHora;
   }
 
@@ -71,6 +81,13 @@ public class Entrega {
 
   public void setDrone(Drone drone) {
     this.drone = drone;
+  }
+
+  /** metodo toString. */
+  @Override
+  public String toString() {
+    return "Entrega{" + "dataHora='" + dataHora + '\'' + ", status='" + status + '\'' + ", drone="
+        + drone + '}';
   }
 
 }

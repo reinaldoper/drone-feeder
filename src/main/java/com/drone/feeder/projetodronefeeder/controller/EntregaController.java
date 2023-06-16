@@ -1,7 +1,9 @@
 package com.drone.feeder.projetodronefeeder.controller;
 
 import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
+import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.model.Entrega;
+import com.drone.feeder.projetodronefeeder.model.Video;
 import com.drone.feeder.projetodronefeeder.service.EntregaService;
 import java.util.HashMap;
 import java.util.List;
@@ -50,9 +52,9 @@ public class EntregaController {
   }
 
   /** altera status. */
-  @PutMapping("/{id}/status")
+  @PutMapping("/{id}/{status}")
   public ResponseEntity<HashMap<String, String>> atualizaStatus(@PathVariable String id,
-      @RequestBody String status) {
+      @PathVariable String status) {
     try {
       Integer parsedId = Integer.parseInt(id);
       entregaService.status(status, parsedId);
@@ -74,25 +76,33 @@ public class EntregaController {
     }
   }
 
-  /** adiciona entrega de um drone. */
-  @PostMapping("/{id}/drone")
-  public ResponseEntity<HashMap<String, String>> entregaDrone(@PathVariable String id,
-      @RequestBody Entrega entrega) {
-    try {
-      Integer parsedId = Integer.parseInt(id);
-      entregaService.saveEntregaDrone(entrega, parsedId);
-      return ResponseEntity.status(HttpStatus.CREATED).body(new MensagemController().mensagem());
-    } catch (NumberFormatException e) {
-      throw new InternalException();
-    }
-  }
-
   /** deleta entrega. */
   @DeleteMapping("/{id}")
   public ResponseEntity<HashMap<String, String>> deleteEntrega(@PathVariable String id) {
     try {
       Integer parsedId = Integer.parseInt(id);
       entregaService.deleteById(parsedId);
+      return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().excluir());
+    } catch (NumberFormatException e) {
+      throw new InternalException();
+    }
+  }
+
+  /** adiciona tarefa nova para um drone . */
+  @PostMapping
+  public ResponseEntity<HashMap<String, String>> entregaSave(
+      @RequestBody AdicionaTarefa adicionaTarefa) {
+    entregaService.save(adicionaTarefa);
+    return ResponseEntity.status(HttpStatus.CREATED).body(new MensagemController().mensagem());
+  }
+
+  /** altera tarefa nova para um drone . */
+  @PutMapping("/{id}")
+  public ResponseEntity<HashMap<String, String>> entregaUpdate(@PathVariable String id,
+      @RequestBody AdicionaTarefa adicionaTarefa) {
+    try {
+      Integer parsedId = Integer.parseInt(id);
+      entregaService.update(parsedId, adicionaTarefa);
       return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().excluir());
     } catch (NumberFormatException e) {
       throw new InternalException();

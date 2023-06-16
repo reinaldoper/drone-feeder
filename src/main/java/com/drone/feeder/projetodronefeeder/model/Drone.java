@@ -1,8 +1,11 @@
 package com.drone.feeder.projetodronefeeder.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,12 +17,14 @@ public class Drone {
 
   /** metodos. */
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
   private double latitude;
   private double longitude;
 
-  @OneToMany(mappedBy = "drone", cascade = CascadeType.ALL, orphanRemoval = true)
+  @JsonManagedReference
+  @OneToMany(mappedBy = "drone", cascade = CascadeType.ALL, orphanRemoval = true,
+      fetch = FetchType.EAGER)
   private List<Entrega> entrega;
 
   public double getLatitude() {
@@ -38,14 +43,18 @@ public class Drone {
     this.latitude = latitude;
   }
 
+  public Integer getId() {
+    return id;
+  }
+
   public double getLongitude() {
     return longitude;
   }
 
-  /** construtor default. */
+  /** constructor. */
   public Drone() {}
 
-  /** constructor. */
+  /** construtor default. */
   public Drone(double latitude, double longitude) {
     super();
     this.latitude = latitude;

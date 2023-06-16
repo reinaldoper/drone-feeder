@@ -1,9 +1,14 @@
 package com.drone.feeder.projetodronefeeder.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 
 /** class Video. */
 
@@ -12,13 +17,20 @@ public class Video {
 
   /** metodo. */
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
   private String nomeArquivo;
 
+  @OneToOne(mappedBy = "video", fetch = FetchType.EAGER)
+  private Entrega entrega;
+
   public String getNomeArquivo() {
     return nomeArquivo;
+  }
+
+  public Integer getId() {
+    return id;
   }
 
   /** construtor. */

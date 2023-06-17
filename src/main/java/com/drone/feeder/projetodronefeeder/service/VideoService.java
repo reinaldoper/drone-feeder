@@ -1,6 +1,7 @@
 package com.drone.feeder.projetodronefeeder.service;
 
 import com.drone.feeder.projetodronefeeder.exceptions.VideoNotFound;
+import com.drone.feeder.projetodronefeeder.exceptions.VideoNull;
 import com.drone.feeder.projetodronefeeder.model.Video;
 import com.drone.feeder.projetodronefeeder.repository.VideoRepository;
 import java.util.List;
@@ -23,12 +24,18 @@ public class VideoService {
   /** metodo save. */
 
   public void save(Video video) {
+    if (video.getNomeArquivo() == null) {
+      throw new VideoNull();
+    }
     videoRepo.save(video);
   }
 
   /** metodo update. */
 
   public void update(Video video, Integer id) {
+    if (video.getNomeArquivo() == null) {
+      throw new VideoNull();
+    }
     Video videoId = videoRepo.findById(id).orElse(null);
     if (videoId != null) {
       videoId.setNomeArquivo(video.getNomeArquivo());

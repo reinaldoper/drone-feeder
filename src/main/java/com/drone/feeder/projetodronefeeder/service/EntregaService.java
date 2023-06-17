@@ -14,7 +14,6 @@ import com.drone.feeder.projetodronefeeder.repository.DroneRepository;
 import com.drone.feeder.projetodronefeeder.repository.EntregaRepository;
 import com.drone.feeder.projetodronefeeder.repository.VideoRepository;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

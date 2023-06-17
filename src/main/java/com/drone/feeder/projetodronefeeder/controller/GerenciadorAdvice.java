@@ -7,6 +7,7 @@ import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
 import com.drone.feeder.projetodronefeeder.exceptions.StatusError;
 import com.drone.feeder.projetodronefeeder.exceptions.VideoNotFound;
 import com.drone.feeder.projetodronefeeder.exceptions.VideoNull;
+import com.drone.feeder.projetodronefeeder.exceptions.VideoRelacionadoEntrega;
 import java.util.HashMap;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +36,15 @@ public class GerenciadorAdvice {
     HashMap<String, String> msg = new HashMap<String, String>();
     msg.put("error", ex.getMessage());
     return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(msg);
+  }
+
+  /** metodo video null. */
+  @ExceptionHandler(VideoRelacionadoEntrega.class)
+  public ResponseEntity<HashMap<String, String>> handleVideoRelacionaException(
+      VideoRelacionadoEntrega ex) {
+    HashMap<String, String> msg = new HashMap<String, String>();
+    msg.put("error", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
   }
 
   /** metodo Drone error. */

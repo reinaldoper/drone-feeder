@@ -1,5 +1,6 @@
 package com.drone.feeder.projetodronefeeder.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,8 @@ public class Video {
 
   private String nomeArquivo;
 
-  @OneToOne(mappedBy = "video", fetch = FetchType.EAGER)
+  @OneToOne(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true,
+      fetch = FetchType.EAGER)
   private Entrega entrega;
 
   public String getNomeArquivo() {

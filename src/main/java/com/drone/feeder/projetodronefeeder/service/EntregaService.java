@@ -60,7 +60,7 @@ public class EntregaService {
   public void deleteById(Integer id) {
     Entrega entrega = entregaRepo.findById(id).orElse(null);
     if (entrega != null) {
-      entregaRepo.delete(entrega);
+      entregaRepo.deleteById(id);
     } else {
       throw new EntregaNotFound();
     }

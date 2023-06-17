@@ -1,7 +1,7 @@
 package com.drone.feeder.projetodronefeeder.service;
 
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
-import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
+import com.drone.feeder.projetodronefeeder.exceptions.DroneNull;
 import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.repository.DroneRepository;
 import java.util.List;
@@ -32,11 +32,21 @@ public class DroneService {
 
   /** metodo save. */
   public void save(Drone drone) {
+    Double latitude = drone.getLatitude();
+    Double longitude = drone.getLongitude();
+    if (latitude == null || longitude == null) {
+      throw new DroneNull();
+    }
     droneRepo.save(drone);
   }
 
   /** metdo update. */
   public void update(Drone drone, Integer id) {
+    Double latitude = drone.getLatitude();
+    Double longitude = drone.getLongitude();
+    if (latitude == null || longitude == null) {
+      throw new DroneNull();
+    }
     Drone droneId = droneRepo.findById(id).orElse(null);;
     if (droneId != null) {
       droneId.setLatitude(drone.getLatitude());

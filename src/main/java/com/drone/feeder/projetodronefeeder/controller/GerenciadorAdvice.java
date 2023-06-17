@@ -1,8 +1,10 @@
 package com.drone.feeder.projetodronefeeder.controller;
 
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
+import com.drone.feeder.projetodronefeeder.exceptions.DroneNull;
 import com.drone.feeder.projetodronefeeder.exceptions.EntregaNotFound;
 import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
+import com.drone.feeder.projetodronefeeder.exceptions.StatusError;
 import com.drone.feeder.projetodronefeeder.exceptions.VideoNotFound;
 import java.util.HashMap;
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class GerenciadorAdvice {
 
-  /** metodo video. */
+  /** metodo video error. */
   @ExceptionHandler(VideoNotFound.class)
   public ResponseEntity<HashMap<String, String>> handleVideoException(VideoNotFound ex) {
     HashMap<String, String> msg = new HashMap<String, String>();
@@ -26,7 +28,7 @@ public class GerenciadorAdvice {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
   }
 
-  /** metodo Drone. */
+  /** metodo Drone error. */
   @ExceptionHandler(DroneNotFound.class)
   public ResponseEntity<HashMap<String, String>> handleDroneException(DroneNotFound ex) {
     HashMap<String, String> msg = new HashMap<String, String>();
@@ -34,7 +36,15 @@ public class GerenciadorAdvice {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
   }
 
-  /** metodo Entrega. */
+  /** metodo Drone null. */
+  @ExceptionHandler(DroneNull.class)
+  public ResponseEntity<HashMap<String, String>> handleDroneNullException(DroneNull ex) {
+    HashMap<String, String> msg = new HashMap<String, String>();
+    msg.put("error", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
+  }
+
+  /** metodo Entrega error. */
   @ExceptionHandler(EntregaNotFound.class)
   public ResponseEntity<HashMap<String, String>> handleEntregaException(EntregaNotFound ex) {
     HashMap<String, String> msg = new HashMap<String, String>();
@@ -42,7 +52,15 @@ public class GerenciadorAdvice {
     return ResponseEntity.status(HttpStatus.NOT_FOUND).body(msg);
   }
 
-  /** erro interno. */
+  /** metodo altera status error. */
+  @ExceptionHandler(StatusError.class)
+  public ResponseEntity<HashMap<String, String>> handleStatusException(StatusError ex) {
+    HashMap<String, String> msg = new HashMap<String, String>();
+    msg.put("error", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
+  }
+
+  /** error interno. */
   @ExceptionHandler(InternalException.class)
   public ResponseEntity<HashMap<String, String>> handleException(InternalException ex) {
     HashMap<String, String> msg = new HashMap<String, String>();

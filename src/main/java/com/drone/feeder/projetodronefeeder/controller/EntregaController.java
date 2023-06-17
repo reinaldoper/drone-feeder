@@ -1,9 +1,7 @@
 package com.drone.feeder.projetodronefeeder.controller;
 
 import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
-import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.model.Entrega;
-import com.drone.feeder.projetodronefeeder.model.Video;
 import com.drone.feeder.projetodronefeeder.service.EntregaService;
 import java.util.HashMap;
 import java.util.List;
@@ -99,11 +97,11 @@ public class EntregaController {
   /** altera tarefa nova para um drone . */
   @PutMapping("/{id}")
   public ResponseEntity<HashMap<String, String>> entregaUpdate(@PathVariable String id,
-      @RequestBody AdicionaTarefa adicionaTarefa) {
+      @RequestBody UpdateTarefa updateTarefa) {
     try {
       Integer parsedId = Integer.parseInt(id);
-      entregaService.update(parsedId, adicionaTarefa);
-      return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().excluir());
+      entregaService.update(parsedId, updateTarefa);
+      return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().atualizar());
     } catch (NumberFormatException e) {
       throw new InternalException();
     }

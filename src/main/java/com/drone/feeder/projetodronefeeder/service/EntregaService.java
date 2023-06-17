@@ -1,9 +1,11 @@
 package com.drone.feeder.projetodronefeeder.service;
 
 import com.drone.feeder.projetodronefeeder.controller.AdicionaTarefa;
+import com.drone.feeder.projetodronefeeder.controller.UpdateTarefa;
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
 import com.drone.feeder.projetodronefeeder.exceptions.EntregaNotFound;
 import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
+import com.drone.feeder.projetodronefeeder.exceptions.StatusError;
 import com.drone.feeder.projetodronefeeder.exceptions.VideoNotFound;
 import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.model.Entrega;
@@ -68,6 +70,10 @@ public class EntregaService {
   /** metodo save. */
 
   public void save(AdicionaTarefa adicionaTarefa) {
+    if (!adicionaTarefa.getStatus().equals("pendente")
+        && !adicionaTarefa.getStatus().equals("entregue")) {
+      throw new StatusError();
+    }
     try {
       Integer ids = adicionaTarefa.getVideoId();
       Video video = videoRepo.findById(ids).orElse(null);
@@ -93,30 +99,26 @@ public class EntregaService {
 
   /** metodo update. */
 
-  public void update(Integer id, AdicionaTarefa adicionaTarefa) {
-    try {
-      Integer ids = adicionaTarefa.getVideoId();
+  public void update(Integer id, UpdateTarefa updateTarefa) {
+    Entrega entrega = entregaRepo.findById(id).orElse(null);
+    if (entrega != null) {
+      Integer ids = updateTarefa.getVideoId();
       Video video = videoRepo.findById(ids).orElse(null);
       if (video == null) {
         throw new VideoNotFound();
       }
-      Drone drone = droneRepo.findById(id).orElse(null);
-      if (drone == null) {
-        throw new DroneNotFound();
-      }
-      Entrega entrega = new Entrega();
       entrega.setVideo(video);
-      entrega.setDrone(drone);
-      drone.adicionarEntrega(entrega);
-      droneRepo.save(drone);
-    } catch (NumberFormatException e) {
-      throw new InternalException();
+      entregaRepo.save(entrega);
+    } else {
+      throw new EntregaNotFound();
     }
-
   }
 
   /** metodo alterar status. */
   public void status(String status, Integer id) {
+    if (!status.equals("pendente") && !status.equals("entregue")) {
+      throw new StatusError();
+    }
     Entrega entrega = entregaRepo.findById(id).orElse(null);
     if (entrega != null) {
       entrega.setStatus(status);

@@ -29,7 +29,7 @@ public class VideoService {
   /** metodo save. */
 
   public void save(Video video) {
-    if (video.getNomeArquivo() == null) {
+    if (video.getNomeArquivo().isEmpty()) {
       throw new VideoNull();
     }
     videoRepo.save(video);
@@ -38,7 +38,7 @@ public class VideoService {
   /** metodo update. */
 
   public void update(Video video, Integer id) {
-    if (video.getNomeArquivo() == null) {
+    if (video.getNomeArquivo().isEmpty()) {
       throw new VideoNull();
     }
     Video videoId = videoRepo.findById(id).orElse(null);

@@ -34,7 +34,7 @@ public class DroneService {
   public void save(Drone drone) {
     Double latitude = drone.getLatitude();
     Double longitude = drone.getLongitude();
-    if (latitude == null || longitude == null) {
+    if (latitude.isNaN() || longitude.isNaN()) {
       throw new DroneNull();
     }
     droneRepo.save(drone);
@@ -44,7 +44,7 @@ public class DroneService {
   public void update(Drone drone, Integer id) {
     Double latitude = drone.getLatitude();
     Double longitude = drone.getLongitude();
-    if (latitude == null || longitude == null) {
+    if (latitude.isNaN() || longitude.isNaN()) {
       throw new DroneNull();
     }
     Drone droneId = droneRepo.findById(id).orElse(null);;

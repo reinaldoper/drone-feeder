@@ -134,4 +134,16 @@ public class TestVideos {
         .andExpect(jsonPath("$.error").value("Digite um número inteiro válido."));
   }
 
+  @Test
+  @Order(9)
+  @DisplayName("9 -  Deve retornar erro arquivo null no save Video.")
+  void deveRetornarVideoNullVideoNaBaseDeDados() throws Exception {
+    mockMvc
+        .perform(post("/videos").contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(new Video(""))))
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isExpectationFailed())
+        .andExpect(jsonPath("$.error").value("O campo /nomeArquivo/ não pode ser nulo."));
+  }
+
 }

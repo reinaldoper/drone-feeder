@@ -4,6 +4,7 @@ import com.drone.feeder.projetodronefeeder.controller.AdicionaTarefa;
 import com.drone.feeder.projetodronefeeder.controller.UpdateTarefa;
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
 import com.drone.feeder.projetodronefeeder.exceptions.EntregaNotFound;
+import com.drone.feeder.projetodronefeeder.exceptions.EntregaNull;
 import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
 import com.drone.feeder.projetodronefeeder.exceptions.StatusError;
 import com.drone.feeder.projetodronefeeder.exceptions.VideoNotFound;
@@ -73,6 +74,9 @@ public class EntregaService {
         && !adicionaTarefa.getStatus().equals("entregue")) {
       throw new StatusError();
     }
+    if (adicionaTarefa.getVideoId() == null || adicionaTarefa.getDroneId() == null) {
+      throw new EntregaNull();
+    }
     try {
       Integer ids = adicionaTarefa.getVideoId();
       Video video = videoRepo.findById(ids).orElse(null);
@@ -99,6 +103,9 @@ public class EntregaService {
   /** metodo update. */
 
   public void update(Integer id, UpdateTarefa updateTarefa) {
+    if (updateTarefa.getVideoId() == null) {
+      throw new EntregaNull();
+    }
     Entrega entrega = entregaRepo.findById(id).orElse(null);
     if (entrega != null) {
       Integer ids = updateTarefa.getVideoId();

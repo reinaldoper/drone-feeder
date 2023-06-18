@@ -3,6 +3,7 @@ package com.drone.feeder.projetodronefeeder.controller;
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNull;
 import com.drone.feeder.projetodronefeeder.exceptions.EntregaNotFound;
+import com.drone.feeder.projetodronefeeder.exceptions.EntregaNull;
 import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
 import com.drone.feeder.projetodronefeeder.exceptions.StatusError;
 import com.drone.feeder.projetodronefeeder.exceptions.VideoNotFound;
@@ -33,6 +34,14 @@ public class GerenciadorAdvice {
   /** metodo video null. */
   @ExceptionHandler(VideoNull.class)
   public ResponseEntity<HashMap<String, String>> handleVideoNullException(VideoNull ex) {
+    HashMap<String, String> msg = new HashMap<String, String>();
+    msg.put("error", ex.getMessage());
+    return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(msg);
+  }
+
+  /** metodo entrega null. */
+  @ExceptionHandler(EntregaNull.class)
+  public ResponseEntity<HashMap<String, String>> handleEntregaNullException(EntregaNull ex) {
     HashMap<String, String> msg = new HashMap<String, String>();
     msg.put("error", ex.getMessage());
     return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(msg);

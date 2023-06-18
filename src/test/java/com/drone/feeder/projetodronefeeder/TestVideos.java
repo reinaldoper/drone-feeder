@@ -25,7 +25,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.model.Video;
 import com.drone.feeder.projetodronefeeder.repository.VideoRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -111,9 +110,27 @@ public class TestVideos {
 
   @Test
   @Order(6)
-  @DisplayName("6 - Deve retornar erro quando id informado não for valido.")
+  @DisplayName("6 - Deve retornar erro quando id informado não for valido(delete).")
   void deveRetornarErroQuandoIdNaoENumeroNaBase() throws Exception {
     mockMvc.perform(delete("/videos/" + new Random().toString())).andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.error").value("Digite um número inteiro válido."));
+  }
+
+  @Test
+  @Order(7)
+  @DisplayName("7 - Deve retornar video, por um id existente informado.")
+  void deveRetornarVideoIdQuandoExistirNaBase() throws Exception {
+    final var video = new Video("video1.mp4");
+    videoRepo.save(video);
+
+    mockMvc.perform(get("/videos/" + video.getId())).andExpect(status().isOk());
+  }
+
+  @Test
+  @Order(8)
+  @DisplayName("8 - Deve retornar erro quando id informado não for valido(get).")
+  void deveRetornarErroQuandoIdNaoENumeroNaBase1() throws Exception {
+    mockMvc.perform(get("/videos/" + new Random().toString())).andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.error").value("Digite um número inteiro válido."));
   }
 

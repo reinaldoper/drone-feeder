@@ -20,10 +20,6 @@ public class Video {
 
   private String nomeArquivo;
 
-  @OneToOne(mappedBy = "video", cascade = CascadeType.ALL, orphanRemoval = true,
-      fetch = FetchType.EAGER)
-  private Entrega entrega;
-
   public String getNomeArquivo() {
     return nomeArquivo;
   }

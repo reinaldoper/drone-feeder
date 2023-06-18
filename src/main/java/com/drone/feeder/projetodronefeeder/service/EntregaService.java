@@ -17,9 +17,11 @@ import com.drone.feeder.projetodronefeeder.repository.VideoRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /** classe entregaService. */
 @Service
+@Transactional
 public class EntregaService {
 
   @Autowired
@@ -33,9 +35,9 @@ public class EntregaService {
 
   /** metodo getAllEntregas. */
   public List<Entrega> getAllEntregasDrone(Integer id) {
-    Drone droneId = droneRepo.findById(id).orElse(null);;
+    Drone droneId = droneRepo.findById(id).orElse(null);
     if (droneId != null) {
-      return droneId.getEntrega();
+      return droneId.getEntregas();
     } else {
       throw new DroneNotFound();
     }
@@ -58,10 +60,14 @@ public class EntregaService {
   }
 
   /** metodo deleteById. */
+
   public void deleteById(Integer id) {
     Entrega entrega = entregaRepo.findById(id).orElse(null);
+    System.out.println(entrega);
     if (entrega != null) {
-      entregaRepo.deleteById(id);
+      Drone drone = entrega.getDrone();
+      drone.deletaEntrega(entrega);
+      entregaRepo.delete(entrega);
     } else {
       throw new EntregaNotFound();
     }

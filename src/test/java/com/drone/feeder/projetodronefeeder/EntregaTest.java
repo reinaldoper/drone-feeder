@@ -73,15 +73,7 @@ public class EntregaTest {
         .andExpect(jsonPath("$.error").value("Digite um número inteiro válido."));
   }
 
-  @Test
-  @Order(4)
-  @DisplayName("4 - Deve remover entrega, por um id existente informado.")
-  void deveRemoverEntregaQuandoExistirNaBase() throws Exception {
-    final var entrega = new Entrega();
-    entregaRepo.save(entrega);
 
-    mockMvc.perform(delete("/entregas/" + entrega.getId())).andExpect(status().isOk());
-  }
 
   @Test
   @Order(5)

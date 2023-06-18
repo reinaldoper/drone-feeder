@@ -1,6 +1,7 @@
 package com.drone.feeder.projetodronefeeder.model;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -24,18 +25,18 @@ public class Drone {
   @JsonManagedReference
   @OneToMany(mappedBy = "drone", cascade = CascadeType.ALL, orphanRemoval = true,
       fetch = FetchType.EAGER)
-  private List<Entrega> entrega;
+  private List<Entrega> entregas;
 
   public double getLatitude() {
     return latitude;
   }
 
-  public List<Entrega> getEntrega() {
-    return entrega;
+  public List<Entrega> getEntregas() {
+    return entregas;
   }
 
-  public void setEntrega(List<Entrega> entrega) {
-    this.entrega = entrega;
+  public void setEntregas(List<Entrega> entregas) {
+    this.entregas = entregas;
   }
 
   public void setLatitude(double latitude) {
@@ -58,6 +59,7 @@ public class Drone {
     super();
     this.latitude = latitude;
     this.longitude = longitude;
+    this.entregas = new ArrayList<Entrega>();
   }
 
   public void setLongitude(double longitude) {
@@ -65,9 +67,13 @@ public class Drone {
   }
 
   /** metodo adicionar. */
-  public void adicionarEntrega(Entrega entrega) {
-    this.entrega.add(entrega);
+  public void adicionarEntrega(Entrega entregas) {
+    this.entregas.add(entregas);
 
+  }
+
+  public void deletaEntrega(Entrega entrega) {
+    this.entregas.remove(entrega);
   }
 
 }

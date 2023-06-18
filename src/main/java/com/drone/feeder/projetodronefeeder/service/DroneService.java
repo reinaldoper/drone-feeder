@@ -2,18 +2,26 @@ package com.drone.feeder.projetodronefeeder.service;
 
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNotFound;
 import com.drone.feeder.projetodronefeeder.exceptions.DroneNull;
+import com.drone.feeder.projetodronefeeder.exceptions.RelacionadoEntrega;
 import com.drone.feeder.projetodronefeeder.model.Drone;
+import com.drone.feeder.projetodronefeeder.model.Entrega;
 import com.drone.feeder.projetodronefeeder.repository.DroneRepository;
+import com.drone.feeder.projetodronefeeder.repository.EntregaRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /** classe droneService. */
 @Service
+@Transactional
 public class DroneService {
 
   @Autowired
   DroneRepository droneRepo;
+
+  @Autowired
+  EntregaRepository entregaRepo;
 
   /** metodo getAll. */
   public List<Drone> getAllDrones() {
@@ -59,10 +67,17 @@ public class DroneService {
   }
 
   /** metdo delete. */
+  @Transactional
   public void delete(Integer id) {
-    Drone droneId = droneRepo.findById(id).orElse(null);;
+    Drone droneId = droneRepo.findById(id).orElse(null);
     if (droneId != null) {
-      droneRepo.deleteById(id);
+      List<Entrega> entregas = entregaRepo.findByDrone(droneId);
+      if (entregas.isEmpty()) {
+        droneRepo.delete(droneId);
+      } else {
+        throw new RelacionadoEntrega();
+      }
+
     } else {
       throw new DroneNotFound();
     }

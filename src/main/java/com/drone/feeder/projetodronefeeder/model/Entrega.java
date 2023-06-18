@@ -26,7 +26,7 @@ public class Entrega {
   // Outros atributos e getters/setters
 
   @JsonBackReference
-  @ManyToOne(fetch = FetchType.EAGER)
+  @ManyToOne
   @JoinColumn(name = "drone_id")
   private Drone drone;
 

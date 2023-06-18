@@ -1,17 +1,19 @@
 package com.drone.feeder.projetodronefeeder.service;
 
+import com.drone.feeder.projetodronefeeder.exceptions.RelacionadoEntrega;
 import com.drone.feeder.projetodronefeeder.exceptions.VideoNotFound;
 import com.drone.feeder.projetodronefeeder.exceptions.VideoNull;
-import com.drone.feeder.projetodronefeeder.exceptions.VideoRelacionadoEntrega;
 import com.drone.feeder.projetodronefeeder.model.Video;
 import com.drone.feeder.projetodronefeeder.repository.EntregaRepository;
 import com.drone.feeder.projetodronefeeder.repository.VideoRepository;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /** class videoService. */
 @Service
+@Transactional
 public class VideoService {
 
   @Autowired
@@ -56,7 +58,7 @@ public class VideoService {
     if (videoId != null) {
       boolean existeVideo = entregaRepo.existsByVideo(videoId);
       if (existeVideo) {
-        throw new VideoRelacionadoEntrega();
+        throw new RelacionadoEntrega();
       }
       videoRepo.deleteById(id);;
     } else {

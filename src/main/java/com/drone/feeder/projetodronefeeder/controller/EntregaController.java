@@ -30,19 +30,17 @@ public class EntregaController {
   /** metodo getAllEntregas. */
   @GetMapping
   public ResponseEntity<List<Entrega>> getAllEntregas() {
-    try {
-      List<Entrega> entregas = entregaService.getAllEntregas();
-      return ResponseEntity.status(HttpStatus.OK).body(entregas);
-    } catch (NumberFormatException e) {
-      throw new InternalException();
-    }
+    List<Entrega> entregas = entregaService.getAllEntregas();
+    return ResponseEntity.status(HttpStatus.OK).body(entregas);
+
   }
 
   /** metodo getIdEntregasDrones. */
   @GetMapping("/drones/{id}")
-  public ResponseEntity<List<Entrega>> getIdDrones(@PathVariable Integer id) {
+  public ResponseEntity<List<Entrega>> getIdDrones(@PathVariable String id) {
     try {
-      List<Entrega> entregas = entregaService.getAllEntregasDrone(id);
+      Integer parsedId = Integer.parseInt(id);
+      List<Entrega> entregas = entregaService.getAllEntregasDrone(parsedId);
       return ResponseEntity.status(HttpStatus.OK).body(entregas);
     } catch (NumberFormatException e) {
       throw new InternalException();

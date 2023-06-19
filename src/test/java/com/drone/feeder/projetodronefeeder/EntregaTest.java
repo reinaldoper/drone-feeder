@@ -109,4 +109,22 @@ public class EntregaTest {
         .andExpect(jsonPath("$.error").value("Digite um número inteiro válido."));
   }
 
+  @Test
+  @Order(9)
+  @DisplayName("9 - Deve retornar erro quando não existe o id informado do drone(get).")
+  void deveRetornarErroQuandoEntregaDroneIdNaoExistirNaBase1() throws Exception {
+    mockMvc.perform(get("/entregas/drones" + new Random().nextInt()))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.error").value("Digite um número inteiro válido."));
+  }
+
+  @Test
+  @Order(10)
+  @DisplayName("10 - Deve retornar erro quando não existe o id informado do drone não for válido(get).")
+  void deveRetornarErroQuandoEntregaDroneIdNaoValidoNaBase1() throws Exception {
+    mockMvc.perform(get("/entregas/drones" + new Random().toString()))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.error").value("Digite um número inteiro válido."));
+  }
+
 }

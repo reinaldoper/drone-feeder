@@ -1,8 +1,12 @@
 package com.drone.feeder.projetodronefeeder;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,8 +25,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import com.drone.feeder.projetodronefeeder.controller.AdicionaTarefa;
+import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.model.Entrega;
+import com.drone.feeder.projetodronefeeder.model.Video;
+import com.drone.feeder.projetodronefeeder.repository.DroneRepository;
 import com.drone.feeder.projetodronefeeder.repository.EntregaRepository;
+import com.drone.feeder.projetodronefeeder.repository.VideoRepository;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 @SpringBootTest
@@ -35,6 +45,12 @@ public class EntregaTest {
 
   @SpyBean
   EntregaRepository entregaRepo;
+
+  @SpyBean
+  DroneRepository droneRepo;
+
+  @SpyBean
+  VideoRepository videoRepo;
 
   @Captor
   private ArgumentCaptor<Entrega> entregaCaptor;
@@ -125,6 +141,67 @@ public class EntregaTest {
     mockMvc.perform(get("/entregas/drones" + new Random().toString()))
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.error").value("Digite um número inteiro válido."));
+  }
+
+  @Test
+  @Order(11)
+  @DisplayName("11 -  Deve adicionar uma Entrega na base de dados.")
+  void deveAdicionarEntregaNaBaseDeDados() throws Exception {
+    final var drone = new Drone(37.7749, -123.4549);
+    droneRepo.save(drone);
+    final var video = new Video("video1.mp4");
+    videoRepo.save(video);
+    final var entrega = new AdicionaTarefa("pendente", drone.getId(), video.getId());
+    mockMvc
+        .perform(post("/entregas").contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(entrega)))
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isCreated())
+        .andExpect(jsonPath("$.Message").value("Inserido com sucesso!"));
+  }
+
+  @Test
+  @Order(12)
+  @DisplayName("12 -  Deve retornar erro ao adicionar 'status' errado.")
+  void deveRetornarErroStatusNaBaseDeDados() throws Exception {
+    final var drone = new Drone(37.7749, -123.4549);
+    droneRepo.save(drone);
+    final var video = new Video("video1.mp4");
+    videoRepo.save(video);
+    final var entrega = new AdicionaTarefa("em andamento", drone.getId(), video.getId());
+    mockMvc
+        .perform(post("/entregas").contentType(MediaType.APPLICATION_JSON)
+            .content(new ObjectMapper().writeValueAsString(entrega)))
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$.error").value("O status deve ser /pendente/ ou /entregue/"));
+  }
+
+  @Test
+  @Order(13)
+  @DisplayName("13 - Deve retornar entregas de um drone expecifico.")
+  void deveRetornarEntregaDroneExpecificoExistirNaBase1() throws Exception {
+    final var drone = new Drone(37.7749, -123.4549);
+    droneRepo.save(drone);
+    final var video = new Video("video1.mp4");
+    videoRepo.save(video);
+    final var entrega = new Entrega();
+    entregaRepo.save(entrega);
+    mockMvc.perform(get("/entregas/drones/" + drone.getId())).andExpect(status().isOk());
+  }
+
+  @Test
+  @Order(14)
+  @DisplayName("14 - Deve retornar erro quando drone expecifico não existe.")
+  void deveRetornarErroDroneExpecificoExistirNaBase1() throws Exception {
+    final var drone = new Drone(37.7749, -123.4549);
+    droneRepo.save(drone);
+    final var video = new Video("video1.mp4");
+    videoRepo.save(video);
+    final var entrega = new Entrega();
+    entregaRepo.save(entrega);
+    mockMvc.perform(get("/entregas/drones/" + new Random().nextInt()))
+        .andExpect(status().isNotFound()).andExpect(jsonPath("$.error").value("Drone não existe"));
   }
 
 }

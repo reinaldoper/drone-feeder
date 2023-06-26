@@ -26,6 +26,7 @@ import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import com.drone.feeder.projetodronefeeder.controller.AdicionaTarefa;
+import com.drone.feeder.projetodronefeeder.controller.UpdateTarefa;
 import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.model.Entrega;
 import com.drone.feeder.projetodronefeeder.model.Video;

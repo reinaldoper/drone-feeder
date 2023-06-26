@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ public class DroneController {
   DroneService droneService;
 
   /** metodo getAllDrones. */
+  @CrossOrigin
   @GetMapping
   public ResponseEntity<List<Drone>> getAllDrones() {
     List<Drone> drones = droneService.getAllDrones();
@@ -34,6 +36,7 @@ public class DroneController {
   }
 
   /** metodo getDroneId. */
+  @CrossOrigin
   @GetMapping("/{id}")
   public ResponseEntity<Drone> getDroneById(@PathVariable String id) {
     try {
@@ -46,6 +49,7 @@ public class DroneController {
   }
 
   /** metodo saveDrone. */
+  @CrossOrigin
   @PostMapping
   public ResponseEntity<HashMap<String, String>> createDrone(@RequestBody Drone drone) {
     droneService.save(drone);
@@ -53,6 +57,7 @@ public class DroneController {
   }
 
   /** metodo updateDrone. */
+  @CrossOrigin
   @PutMapping("/{id}")
   public ResponseEntity<HashMap<String, String>> updateDrone(@PathVariable String id,
       @RequestBody Drone updatedDrone) {
@@ -66,6 +71,7 @@ public class DroneController {
   }
 
   /** metodo deleteDrone. */
+  @CrossOrigin
   @DeleteMapping("/{id}")
   public ResponseEntity<HashMap<String, String>> deleteDrone(@PathVariable String id) {
     try {

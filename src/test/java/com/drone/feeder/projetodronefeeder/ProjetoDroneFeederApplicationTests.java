@@ -25,6 +25,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import com.drone.feeder.projetodronefeeder.model.Drone;
 import com.drone.feeder.projetodronefeeder.repository.DroneRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -113,6 +114,21 @@ class ProjetoDroneFeederApplicationTests {
   void deveRetornarErroQuandoIdNaoENumeroNaBase() throws Exception {
     mockMvc.perform(delete("/drones/" + new Random().toString())).andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.error").value("Digite um número inteiro válido."));
+  }
+
+  @Test
+  @Order(7)
+  @DisplayName("7 - Deve retornar drone expecifico existente da base de dados.")
+  void deveRetornarDroneExistenteNaBase() throws Exception {
+    final var drone1 = new Drone(37.7749, -123.4549);
+
+    droneRepo.save(drone1);
+
+
+    mockMvc.perform(get("/drones/" + drone1.getId()).contentType(MediaType.APPLICATION_JSON))
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+
+
   }
 
 }

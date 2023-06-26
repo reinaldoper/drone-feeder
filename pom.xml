@@ -11,6 +11,7 @@
 	<groupId>com.drone.feeder</groupId>
 	<artifactId>projeto-drone-feeder</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+		
 	<name>projeto-drone-feeder</name>
 	<description>Project for Spring Boot</description>
 	<properties>
@@ -39,6 +40,7 @@
 	</dependencies>
 
 	<build>
+		<finalName>${artifactId}</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>

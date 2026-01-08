@@ -2,6 +2,10 @@
 Projeto final da aceleração java.
 - `API se baseia no monitoramento com drones, a partir da localização enviando videos como entregas.`
 - `API precisa que o usuário esteja logado e devidamente autenticado.`
+
+## Exemplo do token na requisição:
+`Beare <token_aqui>`
+
 ## Clonar a aplicação:
 `git clone git@github.com:reinaldoper/drone-feeder.git`
 ## Instalar as dependências:

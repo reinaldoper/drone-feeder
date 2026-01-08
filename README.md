@@ -1,12 +1,17 @@
 # drone-feeder
 Projeto final da aceleração java.
 - `API se baseia no monitoramento com drones, a partir da localização enviando videos como entregas.`
+- `API precisa que o usuário esteja logado e devidamente autenticado.`
 ## Clonar a aplicação:
 `git clone git@github.com:reinaldoper/drone-feeder.git`
 ## Instalar as dependências:
 `mvn install`
 ## Rodar o docker compose:
 `docker-compose up -d`
+
+## A Aplicação estara rodando:
+`http://localhost:8080/`
+
 ## Rotas:
 <details>
   <summary><strong>Rotas de entregas</strong></summary>
@@ -92,4 +97,29 @@ Projeto final da aceleração java.
 `{"nomeArquivo": "video1.mp4"}`
   
 </details>
+
+<details>
+  <summary><strong>Rotas de usuário:</strong></summary>
+
+### 🔐 Autenticação e gerenciamento de usuários
+
+- **POST `/auth`**  
+  Cria um novo usuário com os dados fornecidos no corpo da requisição (`SaveRequest`).
+
+- **POST `/auth/login`**  
+  Realiza login com e-mail e senha, retornando um token JWT.
+
+- **GET `/auth/{id}`**  
+  Retorna os dados de um usuário com base no ID informado.
+
+- **PUT `/auth/{id}`**  
+  Atualiza os dados de um usuário com base no ID e nos dados enviados (`UpdateRequest`).
+
+- **DELETE `/auth/{id}`**  
+  Remove um usuário do sistema com base no ID informado.
+
+</details>
+
+
+
 

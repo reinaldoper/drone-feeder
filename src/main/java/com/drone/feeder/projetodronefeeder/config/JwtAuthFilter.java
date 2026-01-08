@@ -39,7 +39,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     String token = authHeader.substring(7);
     try {
-      String secretKey = "minhaChaveSecreta123";
+      String secretKey = System.getenv("SECRET_KEY");
       Claims claims = Jwts.parser()
           .setSigningKey(secretKey)
           .parseClaimsJws(token)
@@ -55,6 +55,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
     } catch (Exception e) {
       response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.setContentType("application/json");
+      response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+      response.getWriter().write("{\"error\": \"Token inválido ou ausente\"}");
       return;
     }
 

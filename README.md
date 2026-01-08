@@ -4,7 +4,7 @@ Projeto final da aceleração java.
 - `API precisa que o usuário esteja logado e devidamente autenticado.`
 
 ## Exemplo do token na requisição:
-`Beare <token_aqui>`
+`Bearer <token_aqui>`
 
 ## Clonar a aplicação:
 `git clone git@github.com:reinaldoper/drone-feeder.git`

@@ -18,7 +18,7 @@ public class JwtUtil {
    * @return token JWT gerado
    */
   public String generateToken(String email) {
-    String secretKey = "minhaChaveSecreta123";
+    String secretKey = System.getenv("SECRET_KEY");
     return Jwts.builder()
         .setSubject(email)
         .setIssuedAt(new Date(System.currentTimeMillis()))

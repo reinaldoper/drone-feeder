@@ -9,10 +9,13 @@ import com.drone.feeder.projetodronefeeder.exceptions.UserAlreadyExistsException
 import com.drone.feeder.projetodronefeeder.exceptions.UserNotFound;
 import com.drone.feeder.projetodronefeeder.model.User;
 import com.drone.feeder.projetodronefeeder.repository.UserRepository;
+import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+
 
 /**
  * Classe responsável pelas operações de usuário.
@@ -103,14 +106,14 @@ public class UserService {
    * Atualiza os dados de um usuário.
    *
    * @param request dados atualizados
-   * @param id identificador do usuário
+   * @param id      identificador do usuário
    * @return usuário atualizado
    */
   public UserResponse updateUser(UpdateRequest request, Integer id) {
     User userUpdate = userRepository.findById(id).orElse(null);
 
     if (userUpdate == null) {
-      throw  new UserNotFound("Usuario não encontrado");
+      throw new UserNotFound("Usuario não encontrado");
     }
 
     if (request.getName() != null && !request.getName().isEmpty()) {
@@ -133,18 +136,22 @@ public class UserService {
   /**
    * Realiza login e retorna o token JWT.
    *
-   * @param email e-mail do usuário
+   * @param email       e-mail do usuário
    * @param rawPassword senha em texto plano
    * @return token JWT
    */
-  public String login(String email, String rawPassword) {
+  public HashMap<String, String> login(String email, String rawPassword) {
     User user = userRepository.findByEmail(email)
         .orElseThrow(() -> new UserNotFound("Usuário não encontrado."));
 
     if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
       throw new UserNotFound("Senha incorreta.");
     }
-
-    return jwtUtil.generateToken(user.getEmail());
+    HashMap<String, String> msg = new HashMap<>();
+    String userId = user.getId().toString();
+    msg.put("User", userId);
+    String token = jwtUtil.generateToken(user.getEmail());
+    msg.put("token", token);
+    return msg;
   }
 }

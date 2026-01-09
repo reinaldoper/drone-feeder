@@ -29,7 +29,6 @@ public class EntregaController {
   EntregaService entregaService;
 
   /** metodo getAllEntregas. */
-  @CrossOrigin
   @GetMapping
   public ResponseEntity<List<Entrega>> getAllEntregas() {
     List<Entrega> entregas = entregaService.getAllEntregas();
@@ -38,7 +37,6 @@ public class EntregaController {
   }
 
   /** metodo getIdEntregasDrones. */
-  @CrossOrigin
   @GetMapping("/drones/{id}")
   public ResponseEntity<List<Entrega>> getIdDrones(@PathVariable String id) {
     try {
@@ -51,7 +49,6 @@ public class EntregaController {
   }
 
   /** altera status. */
-  @CrossOrigin
   @PutMapping("/{id}/{status}")
   public ResponseEntity<HashMap<String, String>> atualizaStatus(@PathVariable String id,
       @PathVariable String status) {
@@ -65,7 +62,6 @@ public class EntregaController {
   }
 
   /** metodo getIdEntregas. */
-  @CrossOrigin
   @GetMapping("/{id}")
   public ResponseEntity<Entrega> getById(@PathVariable String id) {
     try {
@@ -78,7 +74,6 @@ public class EntregaController {
   }
 
   /** deleta entrega. */
-  @CrossOrigin
   @DeleteMapping("/{id}")
   public ResponseEntity<HashMap<String, String>> deleteEntrega(@PathVariable String id) {
     try {
@@ -91,7 +86,6 @@ public class EntregaController {
   }
 
   /** adiciona tarefa nova para um drone . */
-  @CrossOrigin
   @PostMapping
   public ResponseEntity<HashMap<String, String>> entregaSave(
       @RequestBody AdicionaTarefa adicionaTarefa) {
@@ -100,7 +94,6 @@ public class EntregaController {
   }
 
   /** altera tarefa nova para um drone . */
-  @CrossOrigin
   @PutMapping("/{id}")
   public ResponseEntity<HashMap<String, String>> entregaUpdate(@PathVariable String id,
       @RequestBody UpdateTarefa updateTarefa) {

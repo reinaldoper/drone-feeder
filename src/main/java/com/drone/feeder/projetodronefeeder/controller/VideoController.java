@@ -28,7 +28,6 @@ public class VideoController {
   VideoService videoService;
 
   /** metodo getAllVideos. */
-  @CrossOrigin
   @GetMapping
   public ResponseEntity<List<Video>> getAllVideos() {
     List<Video> video = videoService.getAllVideos();
@@ -36,7 +35,6 @@ public class VideoController {
   }
 
   /** metodo getByIdVideo. */
-  @CrossOrigin
   @GetMapping("/{id}")
   public ResponseEntity<Video> getByIdVideo(@PathVariable String id) {
     try {
@@ -49,7 +47,6 @@ public class VideoController {
   }
 
   /** metodo updateVideoId. */
-  @CrossOrigin
   @PutMapping("/{id}")
   public ResponseEntity<HashMap<String, String>> getVideoId(@PathVariable String id,
       @RequestBody Video video) {
@@ -63,7 +60,6 @@ public class VideoController {
   }
 
   /** metodo postVideo. */
-  @CrossOrigin
   @PostMapping
   public ResponseEntity<HashMap<String, String>> saveVideo(@RequestBody Video video) {
     videoService.save(video);
@@ -71,7 +67,6 @@ public class VideoController {
   }
 
   /** metodo deleteVideo. */
-  @CrossOrigin
   @DeleteMapping("/{id}")
   public ResponseEntity<HashMap<String, String>> deleteVideo(@PathVariable String id) {
     try {

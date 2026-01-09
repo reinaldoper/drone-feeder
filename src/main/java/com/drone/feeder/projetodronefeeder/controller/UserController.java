@@ -37,7 +37,6 @@ public class UserController {
    * @param saveRequest dados do usuário
    * @return mensagem de sucesso
    */
-  @CrossOrigin
   @PostMapping
   public ResponseEntity<HashMap<String, String>> saveUser(@Valid @RequestBody
                                                             SaveRequest saveRequest) {
@@ -53,7 +52,6 @@ public class UserController {
    * @param id identificador do usuário
    * @return usuário encontrado
    */
-  @CrossOrigin
   @GetMapping("/{id}")
   public ResponseEntity<UserResponse> getUserById(@Valid @PathVariable Integer id) {
     UserResponse user = userService.getUserById(id);
@@ -66,16 +64,13 @@ public class UserController {
    * @param loginRequest dados de login
    * @return token JWT
    */
-  @CrossOrigin
   @PostMapping("/login")
   public ResponseEntity<HashMap<String, String>> login(@Valid @RequestBody
                                                          LoginRequest loginRequest) {
     String email = loginRequest.getEmail();
     String password = loginRequest.getPassword();
-    String token = userService.login(email, password);
-    HashMap<String, String> msg = new HashMap<>();
-    msg.put("token", token);
-    return ResponseEntity.status(HttpStatus.OK).body(msg);
+    HashMap<String, String> token = userService.login(email, password);
+    return ResponseEntity.status(HttpStatus.OK).body(token);
   }
 
   /**
@@ -85,7 +80,6 @@ public class UserController {
    * @param id            identificador do usuário
    * @return usuário atualizado
    */
-  @CrossOrigin
   @PutMapping("/{id}")
   public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UpdateRequest updateRequest,
                                          @PathVariable Integer id) {
@@ -99,7 +93,6 @@ public class UserController {
    * @param id identificador do usuário
    * @return mensagem de sucesso
    */
-  @CrossOrigin
   @DeleteMapping("/{id}")
   public ResponseEntity<HashMap<String, String>> deleteUser(@Valid @PathVariable Integer id) {
     String userDeletado = userService.deleteUser(id);

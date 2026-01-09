@@ -2,6 +2,7 @@ package com.drone.feeder.projetodronefeeder.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 /**
  * classe dto.
@@ -16,9 +17,11 @@ public class UpdateRequest {
   private String email;
 
   @NotBlank(message = "Senha é obrigatória")
+  @Size(min = 6, message = "Senha deve ter pelo menos 6 caracteres")
   private String password;
 
   @NotBlank(message = "Nome é obrigatório")
+  @Size(min = 1, message = "Nome não pode estar vazio")
   private String name;
 
   public String getEmail() {

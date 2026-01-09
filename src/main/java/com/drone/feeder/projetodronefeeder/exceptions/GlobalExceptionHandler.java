@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -225,5 +226,17 @@ public class GlobalExceptionHandler {
     body.put("error", error);
     body.put("message", message);
     return ResponseEntity.status(status).body(body);
+  }
+
+  /**
+   * Trata exceções lançadas quando o corpo da requisição está ausente ou malformado.
+   * @param ex exceção HttpMessageNotReadableException lançada.
+   * @return resposta HTTP 400 com mensagem indicando erro no corpo da requisição.
+   */
+  @ExceptionHandler(HttpMessageNotReadableException.class)
+  public ResponseEntity<Map<String, Object>> handleUnreadableBody(
+      HttpMessageNotReadableException ex) {
+    return buildResponse(HttpStatus.BAD_REQUEST, "Corpo da requisição inválido",
+        "O corpo da requisição está ausente ou mal formatado.");
   }
 }

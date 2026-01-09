@@ -3,6 +3,9 @@ package com.drone.feeder.projetodronefeeder.service;
 import com.drone.feeder.projetodronefeeder.config.JwtUtil;
 import com.drone.feeder.projetodronefeeder.dto.SaveRequest;
 import com.drone.feeder.projetodronefeeder.dto.UpdateRequest;
+import com.drone.feeder.projetodronefeeder.dto.UserResponse;
+import com.drone.feeder.projetodronefeeder.exceptions.InvalidUserDataException;
+import com.drone.feeder.projetodronefeeder.exceptions.UserAlreadyExistsException;
 import com.drone.feeder.projetodronefeeder.exceptions.UserNotFound;
 import com.drone.feeder.projetodronefeeder.model.User;
 import com.drone.feeder.projetodronefeeder.repository.UserRepository;
@@ -37,15 +40,15 @@ public class UserService {
     String email = request.getEmail();
     String password = request.getPassword();
 
-    User userValid = this.getUserByEmail(email);
-    if (userValid != null) {
-      throw new UserNotFound("Email já existe no banco de dados.");
-    }
-
     if (name == null || name.isEmpty()
         || email == null || email.isEmpty()
         || password == null || password.isEmpty()) {
-      throw new UserNotFound("Os campos não podem ser vazios.");
+      throw new InvalidUserDataException("Os campos não podem ser vazios.");
+    }
+
+    boolean emailExists = userRepository.existsByEmail(email);
+    if (emailExists) {
+      throw new UserAlreadyExistsException("E-mail já está em uso.");
     }
 
     String hashedPassword = passwordEncoder.encode(password);
@@ -59,12 +62,12 @@ public class UserService {
    * @param id identificador do usuário
    * @return usuário encontrado
    */
-  public User getUserById(Integer id) {
+  public UserResponse getUserById(Integer id) {
     User userId = userRepository.findById(id).orElse(null);
     if (userId == null) {
       throw new UserNotFound("Usuário não encontrado.");
     }
-    return userId;
+    return new UserResponse(userId.getId(), userId.getName(), userId.getEmail());
   }
 
   /**
@@ -76,7 +79,7 @@ public class UserService {
   public User getUserByEmail(String email) {
     User emailValid = userRepository.findByEmail(email).orElse(null);
     if (emailValid == null) {
-      throw new UserNotFound("Email inválido.");
+      throw new UserNotFound("Usuario não encontrado.");
     }
     return emailValid;
   }
@@ -103,8 +106,12 @@ public class UserService {
    * @param id identificador do usuário
    * @return usuário atualizado
    */
-  public User updateUser(UpdateRequest request, Integer id) {
-    User userUpdate = this.getUserById(id);
+  public UserResponse updateUser(UpdateRequest request, Integer id) {
+    User userUpdate = userRepository.findById(id).orElse(null);
+
+    if (userUpdate == null) {
+      throw  new UserNotFound("Usuario não encontrado");
+    }
 
     if (request.getName() != null && !request.getName().isEmpty()) {
       userUpdate.setName(request.getName());
@@ -119,7 +126,8 @@ public class UserService {
       userUpdate.setPassword(hashedPassword);
     }
 
-    return userRepository.save(userUpdate);
+    User user = userRepository.save(userUpdate);
+    return new UserResponse(user.getId(), user.getName(), user.getEmail());
   }
 
   /**

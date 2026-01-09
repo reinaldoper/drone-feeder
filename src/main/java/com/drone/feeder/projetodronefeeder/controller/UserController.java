@@ -3,11 +3,11 @@ package com.drone.feeder.projetodronefeeder.controller;
 import com.drone.feeder.projetodronefeeder.dto.LoginRequest;
 import com.drone.feeder.projetodronefeeder.dto.SaveRequest;
 import com.drone.feeder.projetodronefeeder.dto.UpdateRequest;
-import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
-import com.drone.feeder.projetodronefeeder.exceptions.UserNotFound;
-import com.drone.feeder.projetodronefeeder.model.User;
+import com.drone.feeder.projetodronefeeder.dto.UserResponse;
 import com.drone.feeder.projetodronefeeder.service.UserService;
+
 import java.util.HashMap;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,15 +39,12 @@ public class UserController {
    */
   @CrossOrigin
   @PostMapping
-  public ResponseEntity<HashMap<String, String>> saveUser(@RequestBody SaveRequest saveRequest) {
-    try {
-      userService.saveUser(saveRequest);
-      HashMap<String, String> response = new HashMap<>();
-      response.put("mensagem", "Usuário salvo com sucesso!");
-      return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    } catch (Exception e) {
-      throw new UserNotFound(e.getMessage());
-    }
+  public ResponseEntity<HashMap<String, String>> saveUser(@Valid @RequestBody
+                                                            SaveRequest saveRequest) {
+    userService.saveUser(saveRequest);
+    HashMap<String, String> response = new HashMap<>();
+    response.put("mensagem", "Usuário salvo com sucesso!");
+    return ResponseEntity.status(HttpStatus.CREATED).body(response);
   }
 
   /**
@@ -58,13 +55,9 @@ public class UserController {
    */
   @CrossOrigin
   @GetMapping("/{id}")
-  public ResponseEntity<User> getUserById(@PathVariable Integer id) {
-    try {
-      User user = userService.getUserById(id);
-      return ResponseEntity.status(HttpStatus.OK).body(user);
-    } catch (NumberFormatException e) {
-      throw new InternalException();
-    }
+  public ResponseEntity<UserResponse> getUserById(@Valid @PathVariable Integer id) {
+    UserResponse user = userService.getUserById(id);
+    return ResponseEntity.status(HttpStatus.OK).body(user);
   }
 
   /**
@@ -75,7 +68,8 @@ public class UserController {
    */
   @CrossOrigin
   @PostMapping("/login")
-  public ResponseEntity<HashMap<String, String>> login(@RequestBody LoginRequest loginRequest) {
+  public ResponseEntity<HashMap<String, String>> login(@Valid @RequestBody
+                                                         LoginRequest loginRequest) {
     String email = loginRequest.getEmail();
     String password = loginRequest.getPassword();
     String token = userService.login(email, password);
@@ -93,14 +87,10 @@ public class UserController {
    */
   @CrossOrigin
   @PutMapping("/{id}")
-  public ResponseEntity<User> updateUser(@RequestBody UpdateRequest updateRequest,
+  public ResponseEntity<UserResponse> updateUser(@Valid @RequestBody UpdateRequest updateRequest,
                                          @PathVariable Integer id) {
-    try {
-      User user = userService.updateUser(updateRequest, id);
-      return ResponseEntity.status(HttpStatus.OK).body(user);
-    } catch (NumberFormatException e) {
-      throw new InternalException();
-    }
+    UserResponse user = userService.updateUser(updateRequest, id);
+    return ResponseEntity.status(HttpStatus.OK).body(user);
   }
 
   /**
@@ -111,14 +101,10 @@ public class UserController {
    */
   @CrossOrigin
   @DeleteMapping("/{id}")
-  public ResponseEntity<HashMap<String, String>> deleteUser(@PathVariable Integer id) {
-    try {
-      String userDeletado = userService.deleteUser(id);
-      HashMap<String, String> msg = new HashMap<>();
-      msg.put("mensagem", userDeletado);
-      return ResponseEntity.status(HttpStatus.OK).body(msg);
-    } catch (NumberFormatException e) {
-      throw new InternalException();
-    }
+  public ResponseEntity<HashMap<String, String>> deleteUser(@Valid @PathVariable Integer id) {
+    String userDeletado = userService.deleteUser(id);
+    HashMap<String, String> msg = new HashMap<>();
+    msg.put("mensagem", userDeletado);
+    return ResponseEntity.status(HttpStatus.OK).body(msg);
   }
 }

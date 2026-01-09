@@ -1,5 +1,8 @@
 package com.drone.feeder.projetodronefeeder.dto;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 /**
  * classe dto.
  */
@@ -8,8 +11,14 @@ public class UpdateRequest {
   /**
    * metodos.
    */
+  @Email(message = "E-mail inválido")
+  @NotBlank(message = "E-mail é obrigatório")
   private String email;
+
+  @NotBlank(message = "Senha é obrigatória")
   private String password;
+
+  @NotBlank(message = "Nome é obrigatório")
   private String name;
 
   public String getEmail() {

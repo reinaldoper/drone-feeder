@@ -7,39 +7,51 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 
-/** class Video. */
+/**
+ * class Video.
+ */
 
 @Entity
 public class Video {
 
-  /** metodo. */
+  /**
+   * metodo.
+   */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
 
-  private String nomeArquivo;
+  @NotBlank(message = "A URL do vídeo não pode estar vazia")
+  @Pattern(regexp = "^(https?://)?([\\w.-]+)(:[0-9]+)?(/.*)?$", message = "URL inválida.")
+  private String url;
 
-  public String getNomeArquivo() {
-    return nomeArquivo;
+  public String getUrl() {
+    return url;
   }
 
   public Integer getId() {
     return id;
   }
 
-  /** construtor. */
-  public Video(String nomeArquivo) {
+  /**
+   * construtor.
+   */
+  public Video(String url) {
     super();
-    this.nomeArquivo = nomeArquivo;
+    this.url = url;
   }
 
-  /** construtor default. */
+  /**
+   * construtor default.
+   */
   public Video() {
     super();
   }
 
-  public void setNomeArquivo(String nomeArquivo) {
-    this.nomeArquivo = nomeArquivo;
+  public void setUrl(String url) {
+    this.url = url;
   }
 }

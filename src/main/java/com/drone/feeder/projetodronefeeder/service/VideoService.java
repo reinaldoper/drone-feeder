@@ -31,7 +31,7 @@ public class VideoService {
   /** metodo save. */
 
   public void save(Video video) {
-    if (video.getNomeArquivo().isEmpty()) {
+    if (video.getUrl().isEmpty()) {
       throw new VideoNull();
     }
     videoRepo.save(video);
@@ -40,12 +40,12 @@ public class VideoService {
   /** metodo update. */
 
   public void update(Video video, Integer id) {
-    if (video.getNomeArquivo().isEmpty()) {
+    if (video.getUrl().isEmpty()) {
       throw new VideoNull();
     }
     Video videoId = videoRepo.findById(id).orElse(null);
     if (videoId != null) {
-      videoId.setNomeArquivo(video.getNomeArquivo());
+      videoId.setUrl(video.getUrl());
       videoRepo.save(videoId);
     } else {
       throw new VideoNotFound();

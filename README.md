@@ -9,7 +9,9 @@ Projeto final da aceleração java.
 ## Clonar a aplicação:
 `git clone git@github.com:reinaldoper/drone-feeder.git`
 ## Instalar as dependências:
+`cd drone-feeder`
 `mvn install`
+
 ## Rodar o docker compose:
 `docker-compose up -d`
 

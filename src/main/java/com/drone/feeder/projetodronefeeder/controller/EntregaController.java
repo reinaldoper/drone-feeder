@@ -3,8 +3,10 @@ package com.drone.feeder.projetodronefeeder.controller;
 import com.drone.feeder.projetodronefeeder.exceptions.InternalException;
 import com.drone.feeder.projetodronefeeder.model.Entrega;
 import com.drone.feeder.projetodronefeeder.service.EntregaService;
+
 import java.util.HashMap;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,8 +20,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/** class entregaController. */
-/** class droneController. */
+/**
+ * class entregaController.
+ */
+
+/**
+ * class droneController.
+ */
 
 @RestController
 @RequestMapping("/entregas")
@@ -28,7 +35,9 @@ public class EntregaController {
   @Autowired
   EntregaService entregaService;
 
-  /** metodo getAllEntregas. */
+  /**
+   * metodo getAllEntregas.
+   */
   @GetMapping
   public ResponseEntity<List<Entrega>> getAllEntregas() {
     List<Entrega> entregas = entregaService.getAllEntregas();
@@ -36,7 +45,9 @@ public class EntregaController {
 
   }
 
-  /** metodo getIdEntregasDrones. */
+  /**
+   * metodo getIdEntregasDrones.
+   */
   @GetMapping("/drones/{id}")
   public ResponseEntity<List<Entrega>> getIdDrones(@PathVariable String id) {
     try {
@@ -48,10 +59,12 @@ public class EntregaController {
     }
   }
 
-  /** altera status. */
+  /**
+   * altera status.
+   */
   @PutMapping("/{id}/{status}")
   public ResponseEntity<HashMap<String, String>> atualizaStatus(@PathVariable String id,
-      @PathVariable String status) {
+                                                                @PathVariable String status) {
     try {
       Integer parsedId = Integer.parseInt(id);
       entregaService.status(status, parsedId);
@@ -61,7 +74,9 @@ public class EntregaController {
     }
   }
 
-  /** metodo getIdEntregas. */
+  /**
+   * metodo getIdEntregas.
+   */
   @GetMapping("/{id}")
   public ResponseEntity<Entrega> getById(@PathVariable String id) {
     try {
@@ -73,7 +88,9 @@ public class EntregaController {
     }
   }
 
-  /** deleta entrega. */
+  /**
+   * deleta entrega.
+   */
   @DeleteMapping("/{id}")
   public ResponseEntity<HashMap<String, String>> deleteEntrega(@PathVariable String id) {
     try {
@@ -85,7 +102,9 @@ public class EntregaController {
     }
   }
 
-  /** adiciona tarefa nova para um drone . */
+  /**
+   * adiciona tarefa nova para um drone .
+   */
   @PostMapping
   public ResponseEntity<HashMap<String, String>> entregaSave(
       @RequestBody AdicionaTarefa adicionaTarefa) {
@@ -93,13 +112,31 @@ public class EntregaController {
     return ResponseEntity.status(HttpStatus.CREATED).body(new MensagemController().mensagem());
   }
 
-  /** altera tarefa nova para um drone . */
+  /**
+   * altera tarefa nova para um drone .
+   */
   @PutMapping("/{id}")
-  public ResponseEntity<HashMap<String, String>> entregaUpdate(@PathVariable String id,
+  public ResponseEntity<HashMap<String, String>> entregaUpdate(
+      @PathVariable String id,
       @RequestBody UpdateTarefa updateTarefa) {
     try {
       Integer parsedId = Integer.parseInt(id);
       entregaService.update(parsedId, updateTarefa);
+      return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().atualizar());
+    } catch (NumberFormatException e) {
+      throw new InternalException();
+    }
+  }
+
+  /**
+   * altera tarefa nova para um drone .
+   */
+  @PutMapping("/tarefa/{id}")
+  public ResponseEntity<HashMap<String, String>> atualizaTarefa(
+      @PathVariable Integer id,
+      @RequestBody AdicionaTarefa adicionaTarefa) {
+    try {
+      entregaService.atualizaEntrega(id, adicionaTarefa);
       return ResponseEntity.status(HttpStatus.OK).body(new MensagemController().atualizar());
     } catch (NumberFormatException e) {
       throw new InternalException();

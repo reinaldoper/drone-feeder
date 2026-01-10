@@ -1,6 +1,8 @@
 package com.drone.feeder.projetodronefeeder.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.persistence.Entity;
@@ -12,11 +14,15 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
-/** class Entrega. */
+/**
+ * class Entrega.
+ */
 
 @Entity
 public class Entrega {
-  /** metodo. */
+  /**
+   * metodo.
+   */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
@@ -25,8 +31,8 @@ public class Entrega {
   private String status = "pendente";
   // Outros atributos e getters/setters
 
-  @JsonBackReference
-  @ManyToOne
+  @JsonIgnoreProperties("entregas")
+  @ManyToOne(fetch = FetchType.EAGER)
   @JoinColumn(name = "drone_id")
   private Drone drone;
 
@@ -51,10 +57,15 @@ public class Entrega {
     this.video = video;
   }
 
-  /** construtor default. */
-  public Entrega() {}
+  /**
+   * construtor default.
+   */
+  public Entrega() {
+  }
 
-  /** construtor. */
+  /**
+   * construtor.
+   */
   public Entrega(String status, Video video, Drone drone) {
     super();
     this.status = status;
@@ -82,7 +93,9 @@ public class Entrega {
     this.drone = drone;
   }
 
-  /** metodo toString. */
+  /**
+   * metodo toString.
+   */
   @Override
   public String toString() {
     return "Entrega{" + "dataHora='" + dataHora + '\'' + ", status='" + status + '\'' + ", drone="

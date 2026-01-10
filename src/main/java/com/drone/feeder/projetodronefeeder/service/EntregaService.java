@@ -14,12 +14,16 @@ import com.drone.feeder.projetodronefeeder.model.Video;
 import com.drone.feeder.projetodronefeeder.repository.DroneRepository;
 import com.drone.feeder.projetodronefeeder.repository.EntregaRepository;
 import com.drone.feeder.projetodronefeeder.repository.VideoRepository;
+
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/** classe entregaService. */
+/**
+ * classe entregaService.
+ */
 @Service
 @Transactional
 public class EntregaService {
@@ -33,7 +37,9 @@ public class EntregaService {
   @Autowired
   VideoRepository videoRepo;
 
-  /** metodo getAllEntregas. */
+  /**
+   * metodo getAllEntregas.
+   */
   public List<Entrega> getAllEntregasDrone(Integer id) {
     Drone droneId = droneRepo.findById(id).orElse(null);
     if (droneId != null) {
@@ -43,13 +49,17 @@ public class EntregaService {
     }
   }
 
-  /** metodo getAll. */
+  /**
+   * metodo getAll.
+   */
 
   public List<Entrega> getAllEntregas() {
     return entregaRepo.findAll();
   }
 
-  /** metodo getById. */
+  /**
+   * metodo getById.
+   */
   public Entrega getById(Integer id) {
     Entrega entrega = entregaRepo.findById(id).orElse(null);
     if (entrega != null) {
@@ -59,7 +69,9 @@ public class EntregaService {
     }
   }
 
-  /** metodo deleteById. */
+  /**
+   * metodo deleteById.
+   */
 
   public void deleteById(Integer id) {
     Entrega entrega = entregaRepo.findById(id).orElse(null);
@@ -73,7 +85,9 @@ public class EntregaService {
     }
   }
 
-  /** metodo save. */
+  /**
+   * metodo save.
+   */
 
   public void save(AdicionaTarefa adicionaTarefa) {
     if (!adicionaTarefa.getStatus().equals("pendente")
@@ -106,7 +120,9 @@ public class EntregaService {
 
   }
 
-  /** metodo update. */
+  /**
+   * metodo update.
+   */
 
   public void update(Integer id, UpdateTarefa updateTarefa) {
     if (updateTarefa.getVideoId() == null) {
@@ -126,7 +142,29 @@ public class EntregaService {
     }
   }
 
-  /** metodo alterar status. */
+  /**
+   * metodo alterar status.
+   */
+  public void atualizaEntrega(Integer id, AdicionaTarefa adicionaTarefa) {
+    if (adicionaTarefa.getStatus() == null
+        || adicionaTarefa.getDroneId() == null || adicionaTarefa.getVideoId() == null) {
+      throw new EntregaNotFound();
+    }
+    boolean ids = videoRepo.existsById(adicionaTarefa.getVideoId());
+    Drone drone = droneRepo.findById(adicionaTarefa.getDroneId()).orElse(null);
+    Video video = videoRepo.findById(adicionaTarefa.getVideoId()).orElse(null);
+    Entrega entrega = entregaRepo.findById(id).orElse(null);
+    if (!ids || drone == null || entrega == null || video == null) {
+      throw new EntregaNotFound();
+    }
+    entrega.setDrone(drone);
+    entrega.setVideo(video);
+    entrega.setStatus(adicionaTarefa.getStatus());
+  }
+
+  /**
+   * metodo alterar status.
+   */
   public void status(String status, Integer id) {
     if (!status.equals("pendente") && !status.equals("entregue")) {
       throw new StatusError();

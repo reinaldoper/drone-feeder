@@ -21,6 +21,7 @@ public class Drone {
   private Integer id;
   private double latitude;
   private double longitude;
+  private String image;
 
   @JsonManagedReference
   @OneToMany(mappedBy = "drone", cascade = CascadeType.ALL, orphanRemoval = true,
@@ -54,11 +55,20 @@ public class Drone {
   /** constructor. */
   public Drone() {}
 
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
   /** construtor default. */
-  public Drone(double latitude, double longitude) {
+  public Drone(double latitude, double longitude, String image) {
     super();
     this.latitude = latitude;
     this.longitude = longitude;
+    this.image = image;
     this.entregas = new ArrayList<Entrega>();
   }
 

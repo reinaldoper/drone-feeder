@@ -53,7 +53,7 @@ class ProjetoDroneFeederApplicationTests {
   @Order(1)
   @DisplayName("1 -  Deve adicionar um Drone na base de dados.")
   void deveAdicionarDroneNaBaseDeDados() throws Exception {
-    final var drone = new Drone(37.7749, -123.4549);
+    final var drone = new Drone(37.7749, -123.4549, "image1");
     mockMvc
         .perform(post("/drones").contentType(MediaType.APPLICATION_JSON)
             .content(new ObjectMapper().writeValueAsString(drone)))
@@ -71,8 +71,8 @@ class ProjetoDroneFeederApplicationTests {
   @Order(2)
   @DisplayName("2 - Deve retornar todos os drones existentes da base de dados.")
   void deveRetornarTodosDronesExistentesNaBase() throws Exception {
-    final var drone1 = new Drone(37.7749, -123.4549);
-    final var drone2 = new Drone(3.7649, -12.4589);
+    final var drone1 = new Drone(37.7749, -123.4549, "image2");
+    final var drone2 = new Drone(3.7649, -12.4589, "image3");
     droneRepo.save(drone1);
     droneRepo.save(drone2);
 
@@ -95,7 +95,7 @@ class ProjetoDroneFeederApplicationTests {
   @Order(4)
   @DisplayName("4 - Deve remover drone, por um id existente informado.")
   void deveRemoverDroneQuandoExistirNaBase() throws Exception {
-    final var drone = droneRepo.save(new Drone(3.7649, -12.4589));
+    final var drone = droneRepo.save(new Drone(3.7649, -12.4589, "image4"));
 
     mockMvc.perform(delete("/drones/" + drone.getId())).andExpect(status().isOk());
   }
@@ -120,7 +120,7 @@ class ProjetoDroneFeederApplicationTests {
   @Order(7)
   @DisplayName("7 - Deve retornar drone expecifico existente da base de dados.")
   void deveRetornarDroneExistenteNaBase() throws Exception {
-    final var drone1 = new Drone(37.7749, -123.4549);
+    final var drone1 = new Drone(37.7749, -123.4549, "image5");
 
     droneRepo.save(drone1);
 

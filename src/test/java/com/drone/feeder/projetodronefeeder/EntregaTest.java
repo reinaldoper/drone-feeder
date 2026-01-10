@@ -148,7 +148,7 @@ public class EntregaTest {
   @Order(11)
   @DisplayName("11 -  Deve adicionar uma Entrega na base de dados.")
   void deveAdicionarEntregaNaBaseDeDados() throws Exception {
-    final var drone = new Drone(37.7749, -123.4549);
+    final var drone = new Drone(37.7749, -123.4549, "image1");
     droneRepo.save(drone);
     final var video = new Video("video1.mp4");
     videoRepo.save(video);
@@ -165,7 +165,7 @@ public class EntregaTest {
   @Order(12)
   @DisplayName("12 -  Deve retornar erro ao adicionar 'status' errado.")
   void deveRetornarErroStatusNaBaseDeDados() throws Exception {
-    final var drone = new Drone(37.7749, -123.4549);
+    final var drone = new Drone(37.7749, -123.4549, "image2");
     droneRepo.save(drone);
     final var video = new Video("video1.mp4");
     videoRepo.save(video);
@@ -182,7 +182,7 @@ public class EntregaTest {
   @Order(13)
   @DisplayName("13 - Deve retornar entregas de um drone expecifico.")
   void deveRetornarEntregaDroneExpecificoExistirNaBase1() throws Exception {
-    final var drone = new Drone(37.7749, -123.4549);
+    final var drone = new Drone(37.7749, -123.4549, "image3");
     droneRepo.save(drone);
     final var video = new Video("video1.mp4");
     videoRepo.save(video);
@@ -195,7 +195,7 @@ public class EntregaTest {
   @Order(14)
   @DisplayName("14 - Deve retornar erro quando drone expecifico não existe.")
   void deveRetornarErroDroneExpecificoExistirNaBase1() throws Exception {
-    final var drone = new Drone(37.7749, -123.4549);
+    final var drone = new Drone(37.7749, -123.4549, "image4");
     droneRepo.save(drone);
     final var video = new Video("video1.mp4");
     videoRepo.save(video);
